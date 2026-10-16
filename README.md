@@ -27,3 +27,4 @@ flutter run
 | State = disabled | `onPressed: null` |
 | State = pressed/focus | håndteres av Flutter (WidgetState) |
 | State = visited | ikke implementert (ingen motpart i appen) |
+# statskog_hunting_app
