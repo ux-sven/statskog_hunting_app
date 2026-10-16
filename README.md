@@ -2,7 +2,7 @@
 
 Flutter-implementasjon av komponentsidene i Figma-filen
 [«Jakt & Fiske (Design 2024)»](https://www.figma.com/design/DuojxX6O5xijF27TpYo3uX/Jakt---Fiske--Design-2024-),
-koblet til Figma med Code Connect (etikett **Flutter**).
+koblet til Figma med Code Connect (etikett **Flutter**). Alle 35 komponentsett er koblet.
 
 ## Kom i gang
 ```bash
@@ -48,6 +48,4 @@ Prinsipper:
 
 ## Avvik i Figma som bør ryddes
 - **Button Secondary** har ulike farger for focus og pressed i Small, Medium og Large. Koden bruker én regel: focus gir `cta-primary-selected`, pressed gir `cta-primary-hover`.
-- **TableView Cell Large** har to varianter som begge heter `Style=Odd, Content=Input`. Den ene skulle vært `Normal`. Settet har derfor feil i Figma og kan ikke publiseres eller kobles.
 - **Checkbox og radio** bruker ikke-tokeniserte farger i ikonlagene (#bcb3e2, #c9ced6). Koden bruker `border-tertiary`, `cta-primary-default` og `cta-primary-disabled`, som er det skjermbildene viser.
-- Komponentsettene **Chips Medium, Map Button og Main Map Navigation** er ikke publisert i biblioteket, så de mangler Code Connect-kobling.
