@@ -18,8 +18,11 @@ flutter run            # åpner komponentkatalogen (lib/main.dart), med bryter f
 | `lib/theme/tokens.dart` | `AppPalette` (Token Colors, Light + Dark), `AppSpacing`, `AppRadius`, `AppSize` |
 | `lib/theme/typography.dart` | `AppType` – Display/Headline (Cormorant Garamond), Subtitle/Body/Button (Open Sans) |
 | `lib/theme/app_theme.dart` | `AppTheme.light()` / `AppTheme.dark()` |
-| `lib/components/components.dart` | Eksporterer alt – bruk `import 'package:jakt_fiske/components/components.dart';` |
-| `figma/*.figma.ts` | Code Connect-maler (én per komponentsett) |
+| `lib/components/components.dart` | Designsystemet – `import 'package:jakt_fiske/components/components.dart';` |
+| `lib/jakt_fiske.dart` | Designsystemet + domenekomponentene i `lib/features/*/widgets` – `import 'package:jakt_fiske/jakt_fiske.dart';` |
+| `lib/features/<område>/widgets` | Domenekomponenter (gjenbrukes, har Code Connect) |
+| `lib/features/<område>/screens` | Skjermer bygget av komponentene – tilsvarer «Innholdskomponenter» i Figma, ingen Code Connect |
+| `figma/*.figma.ts`, `figma/icons/`, `figma/content/` | Code Connect-maler: komponentsider, ikoner/arter og 💠 Components-siden |
 | `test/` | Widgettester, røyktest av katalogen og kompileringstest av alle Code Connect-snutter |
 
 ## Figma-side → Flutter
@@ -35,6 +38,22 @@ flutter run            # åpner komponentkatalogen (lib/main.dart), med bryter f
 | Tab Bar | Tab Bar Button Small / Medium, Tab Bar Small / Medium | `AppTabButton`, `AppTabBar` |
 | TableView | TableView Header / Cell Small / Medium / Large, Table Navigation | `AppTableHeaderCell`, `AppTableCell`, `AppTablePagination` |
 | Text Input | Inputfield Small / Medium / Large | `AppTextField(size:)` |
+
+## 💠 Components → Flutter
+Siden skiller mellom byggesteiner (koblet med Code Connect) og eksempelvisninger, som ligger i seksjonen **Innholdskomponenter** og bygges som skjermer. Se prosjektdokumentet «Komponentvurdering_Components-siden».
+
+| Figma | Flutter |
+|---|---|
+| Art | `SpeciesTile(species:, layout:)` |
+| Filter option cell | `FilterOptionTile.check / .select / .counter / .summary` |
+| Filter checkbox option cell | `FilterCheckboxTile` (Code Connect venter på publisering) |
+| Card, Card Inactive | `CardTypeBadge(CardType.x, inactive:)` |
+| instructions, Offline Reminder | `AppNotice`, `AppNotice.callout` |
+| Search Results Section Header | `SectionHeader`, `ExpandableSection` |
+| Mobile TableView Cell (Archive) | `AppListTile`, `AppListTile.toggle`, `AppToggle` |
+| Segmented Control (iOS-bibliotek) | `AppSegmentedControl` |
+| Telleren i Counter / Capture Item Counter | `CountStepper` |
+| Filter, Filter Art Fisk/Småvilt, Filter Fylke/Kommune/Jaktkort | Eksempel: én `FilterListScreen<T>` |
 
 Prinsipper:
 - **Tilstander** som hover, pressed og focus i Figma er ikke egne props; de følger ekte interaksjon (`InteractiveBuilder`).

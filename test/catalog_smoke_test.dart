@@ -13,7 +13,9 @@ void main() {
         await tester.tap(find.byType(Switch));
         await tester.pumpAndSettle();
       }
-      expect(tester.takeException(), isNull);
+      final e = tester.takeException();
+      if (e is FlutterError) debugPrint(e.toStringDeep());
+      expect(e, isNull);
       expect(find.text('Buttons'), findsOneWidget);
       expect(find.text('Text Input'), findsOneWidget);
     });

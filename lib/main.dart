@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'components/components.dart';
+import 'features/filter/screens/filter_list_screen.dart';
+import 'jakt_fiske.dart';
 
 void main() => runApp(const JaktFiskeApp());
 
@@ -49,6 +50,13 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
   int _tab = 0;
   int _page = 2;
   UserLocationMode _loc = UserLocationMode.notActive;
+  int _seg = 0;
+  bool _toggle = true;
+  bool _fish = false;
+  bool _art = true;
+  bool _selectOpen = false;
+  int _count = 2;
+  bool? _fylke = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +115,133 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
               SpeciesIcon(s),
               Text(s.label, style: AppType.bodyXtraSmall),
             ]),
+        ]),
+        section('Korttyper', [
+          for (final t in CardType.values) Tooltip(message: t.label, child: CardTypeBadge(t)),
+          const Tooltip(message: 'Inaktivt', child: CardTypeBadge(CardType.dagskort, inactive: true)),
+        ]),
+        section('Meldinger', [
+          const SizedBox(
+              width: 358,
+              child: AppNotice(
+                  text: 'Du har ingen aktiveringer.\nHusk å aktivere jaktkortet ditt før du går på jakt.')),
+          SizedBox(
+            width: 366,
+            child: AppNotice.callout(
+              text: 'Last ned offline kartområder med jaktgrenser dersom du skal jakte i områder uten mobildekning.',
+              action: AppButton(
+                label: 'Last ned her',
+                style: AppButtonStyle.secondary,
+                leadingIcon: const AppIcon(AppIcons.downloadFromCloud),
+                onPressed: () {},
+              ),
+            ),
+          ),
+        ]),
+        section('Segmentert valg og seksjoner', [
+          SizedBox(
+            width: 343,
+            child: AppSegmentedControl(
+                segments: const ['Småviltjakt', 'Fiske'],
+                selectedIndex: _seg,
+                onChanged: (i) => setState(() => _seg = i)),
+          ),
+          const SizedBox(
+            width: 386,
+            child: ExpandableSection(title: 'Stedstreff', children: [
+              Text('Treff 1'),
+              Text('Treff 2'),
+            ]),
+          ),
+        ]),
+        section('Listerader', [
+          SizedBox(
+            width: 358,
+            child: Column(children: [
+              AppListTile(title: 'Min profil', icon: AppIcons.account, onTap: () {}),
+              AppListTile(
+                  title: 'Mørk / Lys modus',
+                  subtitle: 'Som på enhet',
+                  layout: AppListTileLayout.inline,
+                  icon: AppIcons.modeSwitch,
+                  onTap: () {}),
+              AppListTile.toggle(
+                  title: 'Vis tilbud i menyen',
+                  icon: AppIcons.priceTag,
+                  value: _toggle,
+                  onChanged: (v) => setState(() => _toggle = v)),
+              AppListTile(
+                  title: 'Namsskogan',
+                  subtitle: '12 MB',
+                  icon: AppIcons.map,
+                  onTap: () {},
+                  onDelete: () {},
+                  showSeparator: false),
+            ]),
+          ),
+        ]),
+        section('Art og filterrader', [
+          for (final l in SpeciesTileLayout.values)
+            SizedBox(width: 160, child: SpeciesTile(species: Species.orret, layout: l)),
+          SizedBox(
+            width: 402,
+            child: Column(children: [
+              FilterOptionTile.check(
+                  label: 'Ørret', species: Species.orret, selected: _fish,
+                  onChanged: (v) => setState(() => _fish = v)),
+              FilterOptionTile.check(
+                  label: 'Ørret', species: Species.orret, selected: _art, checkboxFirst: true,
+                  onChanged: (v) => setState(() => _art = v)),
+              FilterOptionTile.select(
+                  label: 'Ørret', species: Species.orret, expanded: _selectOpen,
+                  onTap: () => setState(() => _selectOpen = !_selectOpen)),
+              FilterOptionTile.counter(
+                  label: 'Ørret', species: Species.orret, count: _count,
+                  onChanged: (v) => setState(() => _count = v)),
+              const FilterOptionTile.summary(label: 'Ørret', species: Species.orret, value: '2 stk'),
+              FilterCheckboxTile(
+                  label: 'Agder', value: _fylke, activeSubFilters: 1,
+                  onChanged: (v) => setState(() => _fylke = v),
+                  onClearSubFilters: () {}, onOpen: () {}),
+            ]),
+          ),
+        ]),
+        section('Eksempelvisninger', [
+          AppButton(
+            label: 'Filter: Art småvilt',
+            style: AppButtonStyle.secondary,
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => Scaffold(
+                body: SafeArea(
+                  child: FilterListScreen<Species>(
+                    title: 'Art',
+                    items: Species.game.where((s) => !s.isCategory).toList(),
+                    labelOf: (s) => s.label,
+                    speciesOf: (s) => s,
+                  ),
+                ),
+              ),
+            )),
+          ),
+          AppButton(
+            label: 'Filter: Område',
+            style: AppButtonStyle.secondary,
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => Scaffold(
+                body: SafeArea(
+                  child: FilterListScreen<String>(
+                    title: 'Område',
+                    items: const ['Agder', 'Akershus', 'Buskerud', 'Finnmark', 'Innlandet',
+                      'Møre og Romsdal', 'Nordland', 'Oslo', 'Rogaland', 'Telemark', 'Troms',
+                      'Trøndelag', 'Vestfold', 'Vestland', 'Østfold', 'Svalbard'],
+                    labelOf: (s) => s,
+                    onOpenItem: (_) {},
+                    subFilterCount: (s) => s == 'Nordland' ? 2 : 0,
+                  ),
+                ),
+              ),
+            )),
+          ),
         ]),
         section('Checkbox', [
           AppCheckbox(

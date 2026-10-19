@@ -82,10 +82,15 @@ class AppChip extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  left: AppSpacing.s, right: onDeleted == null ? AppSpacing.s : 4),
-              child: Text(label, style: _text.copyWith(color: fg)),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: AppSpacing.s, right: onDeleted == null ? AppSpacing.s : 4),
+                child: Text(label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: _text.copyWith(color: fg)),
+              ),
             ),
             if (onDeleted != null)
               Semantics(

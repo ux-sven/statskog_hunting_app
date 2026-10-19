@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_const
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jakt_fiske/components/components.dart';
+import 'package:jakt_fiske/jakt_fiske.dart';
 
 const String? valgtVerdi = null;
 
@@ -1547,6 +1547,274 @@ List<Widget> snippets() => <Widget>[
   UserLocationButton(
     mode: UserLocationMode.north,
     onPressed: () {},
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile(
+    title: 'Main Text',
+    subtitle: 'Sub Text',
+    icon: AppIcons.account,
+    onTap: () {},
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile(
+    title: 'Main Text',
+    layout: AppListTileLayout.inline,
+    onDelete: () {},
+    showSeparator: false,
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile.toggle(
+    title: 'Main Text',
+    subtitle: 'Sub Text',
+    icon: AppIcons.account,
+    value: true,
+    onChanged: (value) {},
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile(
+    title: 'Main Text',
+    layout: AppListTileLayout.inline,
+    showSeparator: false,
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile(
+    title: 'Main Text',
+    subtitle: 'Sub Text',
+    icon: AppIcons.account,
+    onTap: () {},
+    onDelete: () {},
+  ),
+  // content/app_list_tile.figma.ts
+  AppListTile.toggle(
+    title: 'Main Text',
+    value: true,
+    onChanged: (value) {},
+    showSeparator: false,
+  ),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice.figma.ts
+  const AppNotice(text: 'Tekst med \'fnutt\'\nog linjeskift'),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/app_notice_callout.figma.ts
+  AppNotice.callout(
+    text: 'Tekst med \'fnutt\'\nog linjeskift',
+    action: AppButton(label: 'Last ned her', onPressed: () {}),
+  ),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.dagskort),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.ukeskort),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.manedskort),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.aarskort),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.sesongkort),
+  // content/card_type_badge.figma.ts
+  const CardTypeBadge(CardType.tilleggskort),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/card_type_badge_inactive.figma.ts
+  const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+    activeSubFilters: 1,
+    onClearSubFilters: () {},
+    onOpen: () {},
+  ),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+  ),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+    activeSubFilters: 1,
+    onClearSubFilters: () {},
+    onOpen: () {},
+  ),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+  ),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+    activeSubFilters: 1,
+    onClearSubFilters: () {},
+    onOpen: () {},
+  ),
+  // content/filter_checkbox_tile.figma.ts
+  FilterCheckboxTile(
+    label: 'Agder',
+    value: false,
+    onChanged: (value) {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.check(
+    label: 'Art',
+    species: Species.lirype,
+    selected: false,
+    onChanged: (selected) {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.check(
+    label: 'Art',
+    species: Species.lirype,
+    selected: true,
+    onChanged: (selected) {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.check(
+    label: 'Art',
+    species: Species.lirype,
+    selected: false,
+    checkboxFirst: true,
+    onChanged: (selected) {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.check(
+    label: 'Art',
+    species: Species.lirype,
+    selected: true,
+    checkboxFirst: true,
+    onChanged: (selected) {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.select(
+    label: 'Art',
+    species: Species.lirype,
+    expanded: false,
+    onTap: () {},
+  ),
+  // content/filter_option_tile.figma.ts
+  FilterOptionTile.select(
+    label: 'Art',
+    species: Species.lirype,
+    expanded: true,
+    onTap: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/section_header.figma.ts
+  SectionHeader(
+    title: 'Tekst med \'fnutt\' og linjeskift',
+    expanded: true,
+    onToggle: () {},
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+    layout: SpeciesTileLayout.horizontal,
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+    layout: SpeciesTileLayout.small,
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+    layout: SpeciesTileLayout.horizontalTrailing,
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+  ),
+  // content/species_tile.figma.ts
+  SpeciesTile(
+    species: Species.orrfugl,
+    label: 'Artsnavn',
+    layout: SpeciesTileLayout.horizontal,
   ),
 ];
 

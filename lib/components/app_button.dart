@@ -35,6 +35,7 @@ class AppButton extends StatelessWidget {
     this.trailingIcon,
     this.visited = false,
     this.expand = false,
+    this.squareSize,
     required this.onPressed,
   }) : assert(label != null || leadingIcon != null || trailingIcon != null,
             'AppButton trenger label eller ikon');
@@ -51,6 +52,10 @@ class AppButton extends StatelessWidget {
 
   /// Fyller tilgjengelig bredde.
   final bool expand;
+
+  /// Fast kvadratisk størrelse for ikonknapper uten tekst, f.eks. 46 i tellere
+  /// («Button Large» med overstyrt størrelse i «Filter option cell» `Counter`).
+  final double? squareSize;
 
   /// `null` gir deaktivert knapp (Figma `State=disabled`).
   final VoidCallback? onPressed;
@@ -108,7 +113,10 @@ class AppButton extends StatelessWidget {
         }
         return AnimatedContainer(
           duration: const Duration(milliseconds: 120),
-          padding: _padding,
+          padding: squareSize != null ? EdgeInsets.zero : _padding,
+          width: squareSize,
+          height: squareSize,
+          alignment: squareSize != null ? Alignment.center : null,
           decoration: BoxDecoration(
             color: c.background,
             borderRadius: BorderRadius.circular(AppRadius.s),

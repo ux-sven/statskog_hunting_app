@@ -150,7 +150,8 @@ enum AppIcons {
   /// Figma: «Camera» (Icons Windows 11 Outline, node 4249:52652)
   camera('camera'),
   /// Figma: «Hunter» (Icons Material Rounded, node 3794:30780)
-  hunter('hunter');
+  hunter('hunter'),
+  trash('trash');
 
   const AppIcons(this.assetName, {this.multicolor = false});
 
