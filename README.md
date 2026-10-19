@@ -11,6 +11,11 @@ for å teste Figma Code Layers og Code Connect for React. Se [react/README.md](r
 Code Connect-malene for React ligger i `react/figma/` og bruker label «React», så Flutter- og
 React-snutter vises side om side i Dev Mode.
 
+## Design tokens
+
+Farger, avstander, radier og typografi genereres fra Figma-variablene for både Flutter og React.
+Se [tokens/README.md](tokens/README.md).
+
 ## Kom i gang
 ```bash
 flutter create . --project-name jakt_fiske --platforms ios,android,web   # genererer plattformmapper

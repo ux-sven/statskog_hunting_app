@@ -11,6 +11,7 @@ npm ci
 npm run dev          # http://localhost:5173  (komponentkatalog: /#katalog)
 npm run build        # typesjekk + bygg til dist/
 npm run check:figma  # kjører alle Code Connect-malene og typesjekker eksemplene
+npm run tokens       # genererer tokens på nytt fra ../tokens/figma-variables.json
 ```
 
 ## Teknologi
@@ -34,5 +35,5 @@ Bakgrunnskartet er Kartverkets topografiske WMTS (åpent, uten nøkkel).
 ## Figma → kode
 
 * Figma-varianter for hover/fokus/trykket er **ekte interaksjon** i koden (CSS `:hover`, `:focus-visible`, `:active`), ikke props.
-* Farger og mål kommer fra tokens, så endringer i Figma-variablene oppdateres ett sted (`src/styles/tokens.css`).
+* Farger, mål og typografi genereres fra Figma-variablene (se `../tokens/README.md`). Ikke rediger `tokens.css`, `theme.css` eller `typography.css` for hånd.
 * Code Connect-malene ligger i `figma/` og er pushet med Figma MCP. Både Flutter- og React-snutter vises i Dev Mode – velg språk øverst.

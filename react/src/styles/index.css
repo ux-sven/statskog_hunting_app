@@ -1,24 +1,8 @@
 @import 'tailwindcss';
 @import './tokens.css';
 @import './theme.css';
+@import './typography.css';
 
-/* Typografi fra Figma «Typography» (Mobile). Display/Headline: Cormorant Garamond.
-   Subtitle/Body/Button: Open Sans. Navn som i Figma-stilene. */
-@utility type-display-large { font-family: var(--font-display); font-size: 80px; line-height: 152px; }
-@utility type-display-medium { font-family: var(--font-display); font-size: 44px; line-height: 92px; }
-@utility type-display-small { font-family: var(--font-display); font-size: 36px; line-height: 72px; }
-@utility type-headline-h1 { font-family: var(--font-display); font-size: 30px; line-height: 46px; }
-@utility type-headline-h2 { font-family: var(--font-display); font-size: 24px; line-height: 38px; }
-@utility type-headline-h3 { font-family: var(--font-display); font-size: 20px; line-height: 30px; }
-@utility type-subtitle-large { font-family: var(--font-body); font-size: 18px; line-height: 28px; }
-@utility type-subtitle-small { font-family: var(--font-body); font-size: 16px; line-height: 28px; }
-@utility type-body-large { font-family: var(--font-body); font-size: 16px; line-height: 24px; }
-@utility type-body-medium { font-family: var(--font-body); font-size: 15px; line-height: 23px; }
-@utility type-body-small { font-family: var(--font-body); font-size: 14px; line-height: 22px; }
-@utility type-body-xsmall { font-family: var(--font-body); font-size: 12px; line-height: 20px; }
-@utility type-button-large { font-family: var(--font-body); font-size: 18px; line-height: 24px; }
-@utility type-button-medium { font-family: var(--font-body); font-size: 16px; line-height: 22px; }
-@utility type-button-small { font-family: var(--font-body); font-size: 14px; line-height: 20px; }
 
 @utility shadow-map { box-shadow: 0 2px 14px var(--shade-secondary); }
 

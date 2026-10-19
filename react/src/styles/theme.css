@@ -1,3 +1,4 @@
+/* GENERERT av tools/tokens/build.mjs fra tokens/figma-variables.json. Ikke rediger for hånd. */
 @theme inline {
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -36,6 +37,7 @@
   --spacing-l: 24px;
   --spacing-xl: 32px;
   --spacing-xxl: 48px;
+  --spacing-xxxl: 64px;
 
   /* Token Dimensions/radius */
   --radius-small: 4px;
@@ -43,7 +45,12 @@
   --radius-large: 12px;
   --radius-xlarge: 16px;
   --radius-xxlarge: 24px;
+  --radius-xxxlarge: 24px;
 
-  --font-body: 'Open Sans', system-ui, sans-serif;
+  /* Typography/font-type */
   --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-headline: 'Cormorant Garamond', Georgia, serif;
+  --font-subtitle: 'Open Sans', system-ui, sans-serif;
+  --font-body: 'Open Sans', system-ui, sans-serif;
+  --font-button: 'Open Sans', system-ui, sans-serif;
 }

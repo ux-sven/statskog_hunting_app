@@ -1,8 +1,8 @@
+// GENERERT av tools/tokens/build.mjs fra tokens/figma-variables.json. Ikke rediger for hånd.
 import 'package:flutter/material.dart';
 
-/// Fargetokens fra Figma-samlingen «Token Colors» (modus Light og Dark) i
-/// «Jakt & Fiske (Design 2024)». Navnene speiler Figma:
-/// `cta/cta-primary-default` → [ctaPrimaryDefault].
+/// Fargetokens fra Figma-samlingen «Token Colors» (modus Light og Dark).
+/// Navnene speiler Figma: `cta/cta-primary-default` → [ctaPrimaryDefault].
 ///
 /// Komponentene leser fargene med `AppPalette.of(context)`, så de følger
 /// lys/mørk modus automatisk.
@@ -40,31 +40,64 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.shadeSecondary,
   });
 
-  // text/*
-  final Color textPrimary, textSecondary, textTertiary, textBrand, textInvert;
-  // surface/*
-  final Color surfacePrimary,
-      surfaceSecondary,
-      surfaceTertiary,
-      surfaceInvert,
-      surfaceTableviewHeader,
-      surfaceTableviewOdd;
-  // border/*
-  final Color borderPrimary, borderSecondary, borderTertiary, borderInvert;
-  // attention/*
-  final Color attentionSuccess, attentionWarning, attentionError;
-  // cta/*
-  final Color ctaPrimaryDefault,
-      ctaPrimaryHover,
-      ctaPrimaryDisabled,
-      ctaPrimaryVisited,
-      ctaPrimarySelected,
-      ctaSecondaryDefault,
-      ctaSecondaryPressed,
-      ctaSecondarySelected,
-      ctaSecondaryDisabled;
-  // shade-*
-  final Color shadePrimary, shadeSecondary;
+  /// Figma: `text/text-primary` (color/brand/black/100)
+  final Color textPrimary;
+  /// Figma: `text/text-secondary` (color/brand/black/80)
+  final Color textSecondary;
+  /// Figma: `text/text-tertiary` (ultimate colors/gray/400)
+  final Color textTertiary;
+  /// Figma: `text/text-brand` (color/brand/green/100)
+  final Color textBrand;
+  /// Figma: `text/text-invert` (ultimate colors/white/white)
+  final Color textInvert;
+  /// Figma: `surface/surface-primary` (ultimate colors/white/white)
+  final Color surfacePrimary;
+  /// Figma: `surface/surface-secondary` (color/brand/grey/10)
+  final Color surfaceSecondary;
+  /// Figma: `surface/surface-tertiary` (color/brand/blue/100)
+  final Color surfaceTertiary;
+  /// Figma: `surface/surface-invert` (color/brand/green/100)
+  final Color surfaceInvert;
+  /// Figma: `surface/surface-tableview-header` (color/brand/green/20)
+  final Color surfaceTableviewHeader;
+  /// Figma: `surface/surface-tableview-odd` (color/brand/grey/20)
+  final Color surfaceTableviewOdd;
+  /// Figma: `border/border-primary` (color/brand/grey/20)
+  final Color borderPrimary;
+  /// Figma: `border/border-secondary` (color/brand/green/20)
+  final Color borderSecondary;
+  /// Figma: `border/border-tertiary` (color/brand/blue/100)
+  final Color borderTertiary;
+  /// Figma: `border/border-invert` (color/brand/green/80)
+  final Color borderInvert;
+  /// Figma: `attention/success` (color/dark tones/green)
+  final Color attentionSuccess;
+  /// Figma: `attention/warning` (color/brand/orange/100)
+  final Color attentionWarning;
+  /// Figma: `attention/error` (color/dark tones/red)
+  final Color attentionError;
+  /// Figma: `cta/cta-primary-default` (color/brand/green/100)
+  final Color ctaPrimaryDefault;
+  /// Figma: `cta/cta-primary-hover` (color/brand/green/100)
+  final Color ctaPrimaryHover;
+  /// Figma: `cta/cta-primary-disabled` (color/brand/grey/60)
+  final Color ctaPrimaryDisabled;
+  /// Figma: `cta/cta-primary-visited` (color/brand/green/80)
+  final Color ctaPrimaryVisited;
+  /// Figma: `cta/cta-primary-selected` (color/brand/orange/60)
+  final Color ctaPrimarySelected;
+  /// Figma: `cta/cta-secondary-default` (color/brand/orange/60)
+  final Color ctaSecondaryDefault;
+  /// Figma: `cta/cta-secondary-pressed` (color/brand/orange/70)
+  final Color ctaSecondaryPressed;
+  /// Figma: `cta/cta-secondary-selected` (color/brand/orange/80)
+  final Color ctaSecondarySelected;
+  /// Figma: `cta/cta-secondary-disabled` (color/brand/grey/60)
+  final Color ctaSecondaryDisabled;
+  /// Figma: `shade-primary` (color/shade/transparent-dark-strong)
+  final Color shadePrimary;
+  /// Figma: `shade-secondary` (color/shade/transparent-dark-medium)
+  final Color shadeSecondary;
 
   static const light = AppPalette(
     textPrimary: Color(0xFF2A2A2A),
@@ -151,8 +184,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       surfaceSecondary: l(surfaceSecondary, other.surfaceSecondary),
       surfaceTertiary: l(surfaceTertiary, other.surfaceTertiary),
       surfaceInvert: l(surfaceInvert, other.surfaceInvert),
-      surfaceTableviewHeader:
-          l(surfaceTableviewHeader, other.surfaceTableviewHeader),
+      surfaceTableviewHeader: l(surfaceTableviewHeader, other.surfaceTableviewHeader),
       surfaceTableviewOdd: l(surfaceTableviewOdd, other.surfaceTableviewOdd),
       borderPrimary: l(borderPrimary, other.borderPrimary),
       borderSecondary: l(borderSecondary, other.borderSecondary),
@@ -196,8 +228,9 @@ abstract final class AppRadius {
   static const l = 12.0;
   static const xl = 16.0;
   static const xxl = 24.0;
+  static const xxxl = 24.0;
 
-  /// Helt avrundet (pille/sirkel), brukt av søkefelt, chips og kartknapper.
+  /// Helt avrundet (pille/sirkel). Finnes ikke som variabel i Figma.
   static const full = 999.0;
 }
 
