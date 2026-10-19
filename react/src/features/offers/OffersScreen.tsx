@@ -1,143 +1,201 @@
-import { useRef, useState, type PointerEvent } from 'react';
-import { Button } from '../../components/Button';
-import { Chip } from '../../components/Chip';
-import { Notice } from '../../components/Notice';
-import { SearchBar } from '../../components/SearchBar';
+import { useEffect, useMemo, useState } from 'react';
+import { Sheet, SheetMapToggle, type SheetSnap } from '../../components/Sheet';
+import { SheetHeader } from '../../components/SheetHeader';
+import { SearchFilterBar, type ActiveFilter } from '../../components/SearchFilterBar';
 import { SegmentedControl } from '../../components/SegmentedControl';
-import { cx } from '../../components/cx';
-import { Icon } from '../../icons/Icon';
-import { fishSpecies, gameSpecies, type SpeciesGroup, type SpeciesId } from '../../domain/species';
-import type { Offer } from '../../domain/license';
-import { useStore } from '../../data/DemoStore';
+import { Select } from '../../components/Select';
+import { Notice } from '../../components/Notice';
+import { Button } from '../../components/Button';
 import { useNav } from '../../app/AppContext';
-import { ScreenTitle, useMapSheet } from '../../app/widgets';
-import { OffersMap } from '../../map/OffersMap';
-import { FilterListScreen } from '../filter/FilterListScreen';
+import { Skeleton, SyncStatus } from '../../app/widgets';
+import { useStore } from '../../data/AppStore';
+import { activeFilterCount, emptyFilter, huntTypes, sortLabels, type OfferFilter, type SortOrder } from '../../domain/filter';
+import type { Cabin, Offer } from '../../domain/license';
+import { speciesById, type SpeciesId } from '../../domain/species';
+import { MapView } from '../../map/MapView';
+import type { SubareaFeature } from '../../api/jaktdatabasen/types';
+import { OfflineDownloadScreen } from '../settings/OfflineMapsScreens';
+import { OfferFilterSheet } from '../filter/OfferFilterSheet';
+import { CabinCard } from './CabinCard';
+import { InaturSheet } from './InaturSheet';
 import { OfferCard } from './OfferCard';
+import { SearchResults } from './SearchResults';
 
-/** Arket kan stå på tre høyder (andel av kartflaten). */
-const snaps = [0.18, 0.62, 1];
+const filterChips = (f: OfferFilter): ActiveFilter[] => [
+  ...(f.group === 'fish'
+    ? f.fishSpecies.map((s) => ({ id: `s:${s}`, label: speciesById(s as SpeciesId).label }))
+    : f.huntTypes.map((h) => ({ id: `h:${h}`, label: huntTypes.find((x) => x.id === h)!.label }))),
+  ...f.counties.map((c) => ({ id: `c:${c}`, label: c })),
+  ...f.municipalities.map((m) => ({ id: `m:${m}`, label: m })),
+  ...(f.cardKinds.length === 1 ? [{ id: 'k', label: f.cardKinds[0] === 'dagskort' ? 'Dagskort' : 'Periodekort' }] : []),
+  ...(f.from || f.to ? [{ id: 'd', label: `${f.from ?? '…'} – ${f.to ?? '…'}` }] : []),
+  ...(f.includeExpired ? [{ id: 'x', label: 'Med utløpte' }] : []),
+];
+
+const removeChip = (f: OfferFilter, id: string): OfferFilter => {
+  const [k, v] = id.split(':');
+  if (k === 's') return { ...f, fishSpecies: f.fishSpecies.filter((x) => x !== v) };
+  if (k === 'h') return { ...f, huntTypes: f.huntTypes.filter((x) => x !== v) };
+  if (k === 'c') return { ...f, counties: f.counties.filter((x) => x !== v) };
+  if (k === 'm') return { ...f, municipalities: f.municipalities.filter((x) => x !== v) };
+  if (k === 'k') return { ...f, cardKinds: ['dagskort', 'periodekort'] };
+  if (k === 'd') return { ...f, from: undefined, to: undefined };
+  return { ...f, includeExpired: false };
+};
 
 /**
- * Tilbud med kart øverst og liste i et ark som kan dras opp
- * (eksempelvisningene «Hunting Map View» / «Hunting Offers View»).
+ * Tilbud: søk og filter øverst, kart, og en skuff med tilbudene som kan dras
+ * opp til hele skjermen (Figma «Jaktkart», «Jaktkart fullskjerm», «Fiskekart»,
+ * «Jaktkart - klikk i kart», «Hytte - klikk i kart», «Search Results»).
  */
 export function OffersScreen() {
   const store = useStore();
   const nav = useNav();
-  const showMap = useMapSheet();
-  const [group, setGroup] = useState<SpeciesGroup>('game');
-  const [query, setQuery] = useState('');
-  const [species, setSpecies] = useState<Set<SpeciesId>>(new Set());
-  const [snap, setSnap] = useState(1);
-  const offers = store.offers(group, { query, species });
-  const listRef = useRef<HTMLDivElement>(null);
-  const drag = useRef<{ y: number; h: number } | null>(null);
-  const areaRef = useRef<HTMLDivElement>(null);
-  const [dragH, setDragH] = useState<number | null>(null);
+  const f = store.filter;
+  const [query, setQuery] = useState(store.search);
+  const [searching, setSearching] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [snap, setSnap] = useState<SheetSnap>('half');
+  const [selected, setSelected] = useState<Offer | Cabin | null>(null);
+  const [buy, setBuy] = useState<Offer | Cabin | null>(null);
+  const [sheetH, setSheetH] = useState(0);
+  const [focus, setFocus] = useState<{ point?: [number, number]; zoom?: number; subareas?: SubareaFeature[] }>();
 
-  const openFilter = () => {
-    let selection = new Set(species);
-    const list = group === 'game' ? gameSpecies() : fishSpecies();
-    nav.push(
-      <FilterListScreen
-        title="Art"
-        items={list.map((s) => s.id)}
-        keyOf={(s) => s}
-        labelOf={(s) => list.find((x) => x.id === s)!.label}
-        speciesOf={(s) => s}
-        initialSelection={species}
-        onChange={(s) => (selection = s)}
-        onBack={() => {
-          setSpecies(new Set(selection));
-          nav.pop();
-        }}
-      />,
-    );
-  };
+  // Søk mot Inatur etter en kort pause i skrivingen.
+  useEffect(() => {
+    const t = setTimeout(() => query !== store.search && store.setSearch(query), 300);
+    return () => clearTimeout(t);
+  }, [query, store]);
 
-  const buy = (o: Offer) =>
-    nav.openSheet(
-      <div className="flex flex-col gap-xs px-m pb-l">
-        <h2 className="m-0 type-headline-h2 text-text-primary">Kjøp hos Inatur</h2>
-        <p className="m-0 type-body-medium text-text-primary">Kjøpet av «{o.title}» fullføres på inatur.no. Kortet dukker opp under Jaktkort når kjøpet er gjennomført.</p>
-        <Button label="Gå til inatur.no" trailingIcon={<Icon name="externalLink" />} expand className="mt-xs" onClick={nav.closeSheet} />
-      </div>,
-    );
+  const list = store.offerResult;
+  const mapOffers = list;
+  const subareas = useMemo(() => {
+    const ids = new Set(mapOffers.map((o) => o.id));
+    return store.subareasFor().filter((s) => ids.has(s.properties.salesPageId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapOffers.map((o) => o.id).join(), store.cache.subareas.length]);
 
-  // Dra i håndtaket for å endre høyden på arket.
-  const onDown = (e: PointerEvent) => {
-    const area = areaRef.current!.clientHeight;
-    drag.current = { y: e.clientY, h: snaps[snap] * area };
-    (e.target as Element).setPointerCapture(e.pointerId);
-  };
-  const onMove = (e: PointerEvent) => {
-    if (!drag.current) return;
-    setDragH(Math.max(60, drag.current.h - (e.clientY - drag.current.y)));
-  };
-  const onUp = () => {
-    if (!drag.current) return;
-    const area = areaRef.current!.clientHeight;
-    const frac = (dragH ?? drag.current.h) / area;
-    let best = 0;
-    snaps.forEach((s, i) => Math.abs(s - frac) < Math.abs(snaps[best] - frac) && (best = i));
-    if (dragH === null) best = (snap + 1) % snaps.length; // trykk = neste høyde
-    setSnap(best);
-    setDragH(null);
-    drag.current = null;
-  };
+  // Zoom til treffene når filteret eller søket endres.
+  const resultKey = list.map((o) => o.id).join();
+  useEffect(() => {
+    if (!activeFilterCount(f) && !store.search) return;
+    const pts = list.flatMap((o) => (o.location ? [o.location] : []));
+    if (pts.length === 1) setFocus({ point: pts[0], zoom: 8 });
+    else if (pts.length > 1) setFocus({ subareas: subareas });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultKey]);
 
-  const title = group === 'game' ? 'Tilbud småviltjakt' : 'Tilbud fiske';
+  const select = (item: Offer | Cabin) => {
+    setSelected(item);
+    setSearching(false);
+    if (item.location) setFocus({ point: item.location, zoom: 'group' in item ? 9 : 11 });
+  };
+  const setGroup = (i: number) => store.setFilter({ ...emptyFilter(i ? 'fish' : 'game'), sort: f.sort });
+  const title = f.group === 'game' ? 'Tilbud' : 'Tilbud';
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-col gap-s bg-surface-primary px-m py-s">
-        <SearchBar rounded buttonLabel={null} onChange={setQuery} />
-        <div className="flex items-center gap-xs">
-          <Button label={species.size ? `Filter (${species.size})` : 'Filter'} variant="tertiary" leadingIcon={<Icon name="filter" />} onClick={openFilter} />
-          {species.size > 0 && <Chip label="Nullstill" size="medium" onSelectedChange={() => setSpecies(new Set())} onDelete={() => setSpecies(new Set())} />}
-        </div>
-      </div>
-      <div ref={areaRef} className="relative min-h-0 flex-1">
-        <div className="absolute inset-0">
-          <OffersMap offers={store.allOffers().filter((o) => o.group === group)} onSelectOffer={(o) => buy(o)} />
-        </div>
-        <section
-          aria-label={title}
-          className={cx('absolute inset-x-0 bottom-0 flex flex-col rounded-t-xlarge bg-surface-secondary shadow-[0_0_12px_var(--shade-secondary)]', dragH === null && 'transition-[height] duration-200')}
-          style={{ height: dragH ?? `${snaps[snap] * 100}%` }}
-        >
-          <button
-            type="button"
-            aria-label="Endre høyde på listen"
-            onPointerDown={onDown}
-            onPointerMove={onMove}
-            onPointerUp={onUp}
-            className="flex w-full touch-none justify-center pt-xs pb-[4px] cursor-grab"
+      <SearchFilterBar
+        query={query}
+        onQueryChange={(q) => {
+          setQuery(q);
+          setSearching(q.length > 0);
+        }}
+        onSubmit={() => setSearching(query.length > 0)}
+        onFocus={() => query && setSearching(true)}
+        onFilter={() => setFilterOpen(true)}
+        filterCount={activeFilterCount(f)}
+        sort={
+          <Select<SortOrder>
+            label="Sorter etter"
+            showLabel={f.sort === 'relevans'}
+            value={f.sort}
+            onChange={(sort) => store.setFilter({ ...f, sort })}
+            options={(Object.keys(sortLabels) as SortOrder[]).map((v) => ({ value: v, label: sortLabels[v] }))}
+            className="shrink-0"
+          />
+        }
+        activeFilters={filterChips(f)}
+        onRemoveFilter={(id) => store.setFilter(removeChip(f, id))}
+      />
+      <div className="relative min-h-0 flex-1">
+        <MapView
+          offers={mapOffers}
+          cabins={store.cabins}
+          subareas={subareas}
+          selectedOfferId={selected && 'group' in selected ? selected.id : undefined}
+          onSelectOffer={select}
+          onSelectCabin={select}
+          focus={focus}
+          bottomInset={snap === 'full' ? 0 : sheetH}
+          onDownload={() => nav.push(<OfflineDownloadScreen />)}
+        />
+        {searching && query && (
+          <SearchResults
+            query={query}
+            onPlace={(p) => {
+              setSearching(false);
+              setSnap('peek');
+              setFocus({ point: p.point, zoom: 11 });
+            }}
+            onOffer={select}
+            onBuy={setBuy}
+          />
+        )}
+        {selected ? (
+          <Sheet
+            key={selected.id}
+            label={selected.title}
+            header={<SheetHeader variant="drawerSmall" title={selected.title} onClose={() => setSelected(null)} />}
+            snapPoints={['half', 'full']}
+            defaultSnap="half"
+            onClose={() => setSelected(null)}
+            onHeightChange={setSheetH}
           >
-            <span className="h-[4px] w-[48px] rounded-full bg-border-secondary" />
-          </button>
-          <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto pb-l">
-            <ScreenTitle title={title} />
-            <div className="px-s">
-              <SegmentedControl
-                label="Aktivitet"
-                segments={['Småviltjakt', 'Fiske']}
-                selectedIndex={group === 'game' ? 0 : 1}
-                onChange={(i) => {
-                  setGroup(i === 0 ? 'game' : 'fish');
-                  setSpecies(new Set());
-                }}
-              />
+            <div className="px-s pb-l">
+              {'group' in selected ? (
+                <OfferCard offer={selected} onBuy={() => setBuy(selected)} onInfo={() => setBuy(selected)} onShowInMap={() => selected.location && setFocus({ point: selected.location, zoom: 10 })} />
+              ) : (
+                <CabinCard cabin={selected} onBook={() => setBuy(selected)} />
+              )}
             </div>
-            <div className="flex flex-col gap-s p-s">
-              {offers.length === 0 && <Notice text="Ingen tilbud passer søket. Prøv et annet søk eller nullstill filteret." />}
-              {offers.map((o) => (
-                <OfferCard key={o.id} offer={o} onBuy={() => buy(o)} onInfo={() => buy(o)} onShowInMap={() => showMap(o.title, o.location)} />
+          </Sheet>
+        ) : (
+          <Sheet header={<SheetHeader variant="drawer" title={title} action={<SheetMapToggle />} />} snap={snap} onSnapChange={setSnap} onHeightChange={setSheetH}>
+            <div className="sticky top-0 z-[1] bg-surface-primary px-s pb-s">
+              <SegmentedControl label="Aktivitet" segments={['Småviltjakt', 'Fiske']} selectedIndex={f.group === 'fish' ? 1 : 0} onChange={setGroup} />
+            </div>
+            <SyncStatus />
+            <div className="flex flex-col gap-s p-s pb-l">
+              {store.offersState === 'loading' && !list.length && <Skeleton />}
+              {store.offersState === 'error' && (
+                <Notice text="Klarte ikke å hente tilbud fra Inatur." icon="information" />
+              )}
+              {store.offersState !== 'loading' && !list.length && (
+                <>
+                  <Notice text="Ingen tilbud passer søket. Prøv et annet søk eller fjern filtre." />
+                  {activeFilterCount(f) > 0 && <Button label="Fjern alle filtre" variant="secondary" onClick={() => store.setFilter({ ...emptyFilter(f.group), sort: f.sort })} />}
+                </>
+              )}
+              {list.map((o) => (
+                <OfferCard key={o.id} offer={o} onBuy={() => setBuy(o)} onInfo={() => setBuy(o)} onShowInMap={() => select(o)} />
               ))}
             </div>
-          </div>
-        </section>
+          </Sheet>
+        )}
       </div>
+      <OfferFilterSheet
+        open={filterOpen}
+        value={f}
+        onClose={() => setFilterOpen(false)}
+        countFor={(d) => store.filterLocal(d, store.search).length}
+        onApply={(d) => {
+          store.setFilter(d);
+          setFilterOpen(false);
+          setSnap('half');
+        }}
+      />
+      <InaturSheet item={buy} onClose={() => setBuy(null)} />
     </div>
   );
 }

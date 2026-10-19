@@ -5,6 +5,8 @@ import type { IconName } from '../icons/iconNames';
 export interface BottomNavItem {
   icon: IconName;
   label: string;
+  /** Nedtonet (f.eks. «Jaktkort» uten innlogging). Kan fortsatt trykkes. */
+  disabled?: boolean;
 }
 
 export interface BottomNavProps {
@@ -25,8 +27,9 @@ export function BottomNav({ items, selectedIndex, onChange }: BottomNavProps) {
             key={it.label}
             type="button"
             aria-current={on ? 'page' : undefined}
+            aria-disabled={it.disabled || undefined}
             onClick={() => onChange(i)}
-            className={cx('flex h-[48px] min-w-0 flex-1 flex-col items-center justify-center gap-[2px] cursor-pointer', on && 'bg-surface-secondary')}
+            className={cx('flex h-[48px] min-w-0 flex-1 flex-col items-center justify-center gap-[2px] cursor-pointer', on && 'bg-surface-secondary', it.disabled && 'opacity-40')}
           >
             <Icon name={it.icon} size={26} className="text-cta-primary-default" />
             <span className={cx('max-w-full truncate text-[10px] leading-[12px]', on ? 'font-extrabold text-text-primary' : 'font-medium text-cta-primary-default')}>{it.label}</span>

@@ -50,7 +50,7 @@ export function FilterOptionTile(props: FilterOptionTileProps) {
           aria-checked={selected}
           disabled={!onChange}
           onClick={() => onChange?.(!selected)}
-          className={cx(pad, 'group cursor-pointer', species ? 'min-h-[64px]' : 'min-h-[48px]', selected ? 'bg-surface-secondary' : 'bg-surface-primary hover:bg-surface-secondary')}
+          className={cx(pad, 'group cursor-pointer text-left', species ? 'min-h-[64px]' : 'min-h-[48px]', selected ? 'bg-surface-secondary' : 'bg-surface-primary hover:bg-surface-secondary')}
         >
           {checkboxFirst ? (
             <>

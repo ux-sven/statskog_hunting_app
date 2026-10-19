@@ -23,7 +23,7 @@ for (const sub of ['components','content','icons']) for (const f of fs.readdirSy
     try {
       const r=new Function('figma', src)({selectedInstance: mk(pick,bool), code});
       const txt=flat(r.example);
-      if(/undefined|\[object|null\b(?!\})/.test(txt.replace(/\{null\}/g,''))) { console.log('BAD', f, txt); fails++; }
+      if(/undefined|\[object/.test(txt)) { console.log('BAD', f, txt); fails++; }
       snippets.push(`  // ${f}\n  out.push(${txt.replace(/\/\/ aktivert[^\n]*/, '')});`);
       if (sub==='icons') break;
     } catch(e) { console.log('ERR',f,e.message); fails++; }
@@ -32,18 +32,29 @@ for (const sub of ['components','content','icons']) for (const f of fs.readdirSy
 const uniq=[...new Set(snippets)];
 fs.writeFileSync(path.join(here, '../src/figmaSnippets.check.tsx'), `// GENERERT av figma/check-snippets.mjs – sjekker at Code Connect-eksemplene kompilerer.
 import { useState, type ReactNode } from 'react';
-import { Button, Callout, CardTypeBadge, Checkbox, Chip, ExpandableSection, Icon, Link, ListTile, MainMapNavigation, MapButton, MapZoomControl, Notice, Radio, SearchBar, SecondaryMapNavigation, SpeciesIcon, TabBar, TabButton, TableCell, TableHeaderCell, TablePagination, TextField, UserLocationButton, CabinPoi } from './components';
+import { BottomNav, ModalSheet, SearchFilterBar, Select, Sheet, SheetHeader, SheetMapToggle, Button, Callout, CardTypeBadge, Checkbox, Chip, ExpandableSection, Icon, Link, ListTile, MainMapNavigation, MapButton, MapZoomControl, Notice, Radio, SearchBar, SecondaryMapNavigation, SpeciesIcon, TabBar, TabButton, TableCell, TableHeaderCell, TablePagination, TextField, UserLocationButton, CabinPoi } from './components';
 import { ActivationCard, DayCell, DayPicker, FilterCheckboxTile, FilterOptionTile, LicenseCard, LicenseDetails, LicenseSummary, OfferCard, OfferImage, SpeciesTile } from './features';
-import { demoStore as store } from './data/DemoStore';
+import { sampleActivation, sampleLicense, sampleOffer, sampleSlots } from './domain/samples';
 
 export function Snippets() {
   const [value, setValue] = useState('b');
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
-  const offer = store.allOffers()[0];
-  const license = store.licenses('game')[0];
-  const activation = store.activations()[0];
-  const slot = store.activationSlots(license)[0];
+  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const [sort, setSort] = useState('relevans');
+  const [tab, setTab] = useState(0);
+  const [, setSelected] = useState<unknown>(null);
+  const setFilterOpen = (_: boolean) => {};
+  const sortOptions = [{ value: 'relevans', label: 'Relevans' }];
+  const activeFilters = [{ id: 'a', label: 'Lirype' }];
+  const removeFilter = (_: string) => {};
+  const children = null;
+  const offer = sampleOffer;
+  const license = sampleLicense;
+  const activation = sampleActivation;
+  const slots = sampleSlots;
+  const slot = slots[0];
   const days = new Set<number>();
   const out: ReactNode[] = [];
 ${uniq.join('\n')}

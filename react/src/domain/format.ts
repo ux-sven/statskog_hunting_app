@@ -15,3 +15,21 @@ export const formatKroner = (n: number) => `${String(n).replace(/\B(?=(\d{3})+(?
 export const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 export const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 export const sameDay = (a: Date, b: Date) => a.getTime() === b.getTime() || startOfDay(a).getTime() === startOfDay(b).getTime();
+
+/** «2024-11-14» → Date (lokal midnatt). */
+export const parseDay = (s: string) => {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
+};
+/** Date → «2024-11-14». */
+export const isoDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const longMonths = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+/** 14. november 2024 */
+export const formatLongDate = (d: Date) => `${d.getDate()}. ${longMonths[d.getMonth()]} ${d.getFullYear()}`;
+/** «Sist oppdatert 12:04» / «i går 18:30» */
+export const formatTime = (d: Date) => {
+  const t = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const today = startOfDay(new Date()).getTime();
+  const that = startOfDay(d).getTime();
+  return that === today ? t : that === today - 86400000 ? `i går ${t}` : `${formatDate(d)} ${t}`;
+};

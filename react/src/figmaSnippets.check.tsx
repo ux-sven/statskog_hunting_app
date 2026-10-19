@@ -1,19 +1,51 @@
 // GENERERT av figma/check-snippets.mjs – sjekker at Code Connect-eksemplene kompilerer.
 import { useState, type ReactNode } from 'react';
-import { Button, Callout, CardTypeBadge, Checkbox, Chip, ExpandableSection, Icon, Link, ListTile, MainMapNavigation, MapButton, MapZoomControl, Notice, Radio, SearchBar, SecondaryMapNavigation, SpeciesIcon, TabBar, TabButton, TableCell, TableHeaderCell, TablePagination, TextField, UserLocationButton, CabinPoi } from './components';
+import { BottomNav, ModalSheet, SearchFilterBar, Select, Sheet, SheetHeader, SheetMapToggle, Button, Callout, CardTypeBadge, Checkbox, Chip, ExpandableSection, Icon, Link, ListTile, MainMapNavigation, MapButton, MapZoomControl, Notice, Radio, SearchBar, SecondaryMapNavigation, SpeciesIcon, TabBar, TabButton, TableCell, TableHeaderCell, TablePagination, TextField, UserLocationButton, CabinPoi } from './components';
 import { ActivationCard, DayCell, DayPicker, FilterCheckboxTile, FilterOptionTile, LicenseCard, LicenseDetails, LicenseSummary, OfferCard, OfferImage, SpeciesTile } from './features';
-import { demoStore as store } from './data/DemoStore';
+import { sampleActivation, sampleLicense, sampleOffer, sampleSlots } from './domain/samples';
 
 export function Snippets() {
   const [value, setValue] = useState('b');
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
-  const offer = store.allOffers()[0];
-  const license = store.licenses('game')[0];
-  const activation = store.activations()[0];
-  const slot = store.activationSlots(license)[0];
+  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const [sort, setSort] = useState('relevans');
+  const [tab, setTab] = useState(0);
+  const [, setSelected] = useState<unknown>(null);
+  const setFilterOpen = (_: boolean) => {};
+  const sortOptions = [{ value: 'relevans', label: 'Relevans' }];
+  const activeFilters = [{ id: 'a', label: 'Lirype' }];
+  const removeFilter = (_: string) => {};
+  const children = null;
+  const offer = sampleOffer;
+  const license = sampleLicense;
+  const activation = sampleActivation;
+  const slots = sampleSlots;
+  const slot = slots[0];
   const days = new Set<number>();
   const out: ReactNode[] = [];
+  // bottom_nav.figma.ts
+  out.push(<BottomNav
+  items={[
+  { icon: 'priceTag', label: 'Tilbud' },
+  { icon: 'accuracy', label: 'Jaktkort' },
+  { icon: 'fishingHook', label: 'Fiskekort' },
+  { icon: 'report', label: 'Fangstrapport' },
+  { icon: 'settings', label: 'Innstillinger' },
+  ]}
+  selectedIndex={tab}
+  onChange={setTab}
+/>);
+  // bottom_nav.figma.ts
+  out.push(<BottomNav
+  items={[
+  { icon: 'priceTag', label: 'Tilbud' },
+  { icon: 'accuracy', label: 'Jaktkort' },
+  ]}
+  selectedIndex={tab}
+  onChange={setTab}
+/>);
   // button_large.figma.ts
   out.push(<Button
   label="Kjøp"
@@ -808,6 +840,49 @@ export function Snippets() {
   tooltip="Kartlag"
   onClick={() => {}}
 />);
+  // map_navigation_bar.figma.ts
+  out.push(<ModalSheet
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Linje &quot;1&quot;
+Linje 2"
+  variant="page"
+>
+  {children}
+</ModalSheet>);
+  // map_navigation_bar.figma.ts
+  out.push(<SearchFilterBar
+  query={query}
+  onQueryChange={setQuery}
+  onFilter={() => setFilterOpen(true)}
+  sort={<Select label="Sorter etter" showLabel value={sort} onChange={setSort} options={sortOptions} />}
+  activeFilters={activeFilters}
+  onRemoveFilter={removeFilter}
+/>);
+  // map_navigation_bar.figma.ts
+  out.push(<ModalSheet
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Linje &quot;1&quot;
+Linje 2"
+  variant="stack"
+>
+  {children}
+</ModalSheet>);
+  // map_navigation_bar.figma.ts
+  out.push(<Sheet header={<SheetHeader variant="drawer" title="Linje &quot;1&quot;
+Linje 2" action={<SheetMapToggle />} />}>
+  {children}
+</Sheet>);
+  // map_navigation_bar.figma.ts
+  out.push(<Sheet
+  snapPoints={['half', 'full']}
+  onClose={() => setSelected(null)}
+  header={<SheetHeader variant="drawerSmall" title="Linje &quot;1&quot;
+Linje 2" onClose={() => setSelected(null)} />}
+>
+  {children}
+</Sheet>);
   // map_zoom.figma.ts
   out.push(<MapZoomControl onZoomIn={() => {}} onZoomOut={() => {}} />);
   // radio.figma.ts
@@ -1719,7 +1794,7 @@ export function Snippets() {
 />);
   // day_picker.figma.ts
   out.push(<DayPicker
-  slots={store.activationSlots(license)}
+  slots={slots}
   selected={days}
   onToggle={(day) => {}}
 />);

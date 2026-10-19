@@ -1,16 +1,19 @@
 import { createContext, useContext, type ReactNode } from 'react';
 
-/** Navigasjon og meldinger for prototypen (tilsvarer Navigator og SnackBar i Flutter). */
+export type TabId = 'tilbud' | 'jaktkort' | 'fiskekort' | 'fangstrapport' | 'innstillinger';
+
+/** Navigasjon og meldinger i appen. */
 export interface AppNav {
-  /** Åpner en skjerm over bunnmenyen. */
+  /** Åpner en side over bunnmenyen (innstillinger, offline kart …). */
   push: (screen: ReactNode) => void;
-  /** Lukker øverste skjerm. */
+  /** Lukker øverste side. */
   pop: () => void;
   /** Viser en kort melding nederst. */
   toast: (text: string) => void;
-  /** Åpner et ark nederst. */
-  openSheet: (content: ReactNode) => void;
-  closeSheet: () => void;
+  /** Bytter fane i bunnmenyen. */
+  goTo: (tab: TabId) => void;
+  /** Åpner innloggingen. */
+  login: () => void;
 }
 
 export const AppContext = createContext<AppNav | null>(null);

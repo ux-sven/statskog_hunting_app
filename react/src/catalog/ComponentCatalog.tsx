@@ -1,14 +1,15 @@
 import { useState, type ReactNode } from 'react';
 import {
+  AlertDialog, ModalSheet, SearchFilterBar, Select, Sheet, SheetHeader, SheetMapToggle,
   BottomNav, Button, CabinPoi, Callout, CardTypeBadge, Checkbox, Chip, CountStepper, ExpandableSection, Icon, Link, ListTile,
   MainMapNavigation, MetaRow, Notice, Radio, SearchBar, SecondaryMapNavigation, SegmentedControl, SpeciesIcon, TabBar,
   TableCell, TableHeaderCell, TablePagination, TextField, UserLocationButton, type ButtonVariant, type SortState, type UserLocationMode,
 } from '../components';
-import { ActivationCard, DayPicker, FilterCheckboxTile, FilterOptionTile, LicenseCard, LicenseSummary, OfferCard, SpeciesTile } from '../features';
+import { ActivationCard, CabinCard, DayPicker, FilterCheckboxTile, FilterOptionTile, LicenseCard, LicenseSummary, OfferCard, SpeciesTile } from '../features';
 import { iconNames } from '../icons/iconNames';
 import { speciesList } from '../domain/species';
 import { cardTypes, type CardType } from '../domain/cardType';
-import { demoStore } from '../data/DemoStore';
+import { sampleActivation, sampleCabin, sampleLicense, sampleOffer, sampleSlots } from '../domain/samples';
 import type { Size } from '../components/cx';
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
@@ -43,11 +44,14 @@ export function ComponentCatalog() {
   const [fylke, setFylke] = useState<boolean | null>(false);
   const [sort, setSort] = useState<SortState>('unsorted');
   const [nav, setNav] = useState(0);
-  const lic = demoStore.licenses('game')[0];
-  const act = demoStore.activations()[0];
-  const slots = demoStore.activationSlots(lic);
+  const [search, setSearch] = useState('');
+  const [modal, setModal] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const lic = sampleLicense;
+  const act = sampleActivation;
+  const slots = sampleSlots;
   const [days, setDays] = useState(new Set([slots[1].date.getTime()]));
-  const offer = demoStore.allOffers()[0];
+  const offer = sampleOffer;
 
   return (
     <div className="p-m">
@@ -166,6 +170,41 @@ export function ComponentCatalog() {
         <TablePagination size="small" currentPage={page} pageCount={8} onPageChange={setPage} />
         <TablePagination size="small" compact currentPage={page} pageCount={8} onPageChange={setPage} />
       </Section>
+      <Section title="Skuffer og modaler">
+        <div className="w-full overflow-hidden rounded-medium border border-border-primary">
+          {(['default', 'modalStack', 'drawer', 'drawerSmall'] as const).map((v) => (
+            <div key={v} className="border-b border-border-primary bg-surface-secondary pt-xs last:border-0">
+              <SheetHeader variant={v} title="Headline" onClose={() => {}} action={v === 'drawer' ? <Button variant="tertiary" size="small" label="Ferdig" /> : undefined} className="bg-surface-primary" />
+            </div>
+          ))}
+        </div>
+        <div className="w-full overflow-hidden rounded-medium border border-border-primary">
+          <SearchFilterBar
+            query={search}
+            onQueryChange={setSearch}
+            onFilter={() => {}}
+            filterCount={2}
+            sort={<Select label="Sorter etter" showLabel value="relevans" onChange={() => {}} options={[{ value: 'relevans', label: 'Relevans' }, { value: 'pris', label: 'Pris' }]} />}
+            activeFilters={[{ id: 'a', label: 'Lirype' }, { id: 'b', label: 'Nordland' }]}
+            onRemoveFilter={() => {}}
+          />
+        </div>
+        <p className="m-0 w-full type-body-small text-text-secondary">Skuffen under kan dras i toppen, trykkes på håndtaket eller styres med piltastene.</p>
+        <div className="relative h-[460px] w-full overflow-hidden rounded-medium bg-[url('./images/kart_jaktfelt.jpg')] bg-cover">
+          <Sheet header={<SheetHeader variant="drawer" title="Tilbud" action={<SheetMapToggle />} />} defaultSnap="half">
+            <div className="flex flex-col gap-s p-s">
+              <Notice text="Innhold i skuffen ruller for seg selv." />
+              <OfferCard offer={offer} onBuy={() => {}} />
+            </div>
+          </Sheet>
+        </div>
+        <Button label="Åpne modal" variant="secondary" onClick={() => setModal(true)} />
+        <Button label="Vis varsel" variant="secondary" onClick={() => setAlert(true)} />
+        <ModalSheet open={modal} onClose={() => setModal(false)} title="Fangstrapport">
+          <p className="p-m">Modal Stack: dra toppen ned eller trykk × for å lukke.</p>
+        </ModalSheet>
+        <AlertDialog open={alert} title="Løypesporing" message="Ved å aktivere sporing vil appen tegne hvor du beveger deg i kartet. Ønsker du aktivere sporing nå?" confirmLabel="Start sporing" onCancel={() => setAlert(false)} onConfirm={() => setAlert(false)} />
+      </Section>
       <Section title="Kart">
         <div className="relative h-[320px] w-full overflow-hidden rounded-medium bg-[url('./images/kart_oversikt.jpg')] bg-cover">
           <MainMapNavigation className="absolute top-0 right-0" onHome={() => {}} onZoomIn={() => {}} onZoomOut={() => {}} onCompassNorth={() => {}} userLocationMode={loc} onUserLocation={() => setLoc(loc === 'notActive' ? 'active' : loc === 'active' ? 'north' : 'notActive')} />
@@ -209,7 +248,13 @@ export function ComponentCatalog() {
           <OfferCard offer={offer} onBuy={() => {}} onInfo={() => {}} onShowInMap={() => {}} />
         </div>
         <div className="w-full">
+          <CabinCard cabin={sampleCabin} onBook={() => {}} />
+        </div>
+        <div className="w-full">
           <LicenseCard license={lic} onActivate={() => {}} onInfo={() => {}} onShowInMap={() => {}} />
+        </div>
+        <div className="w-full">
+          <LicenseCard variant="fishing" license={{ ...lic, group: 'fish', cardType: 'aarskort', title: 'Statskog Norgeskort for innlandsfiske' }} onInfo={() => {}} onShowInMap={() => {}} onReportCapture={() => {}} />
         </div>
         <div className="w-full">
           <LicenseCard license={{ ...lic, activatedDate: new Date() }} onActivate={() => {}} onInfo={() => {}} onReportCapture={() => {}} />

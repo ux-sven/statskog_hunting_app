@@ -8,3 +8,4 @@ export * from './cards/LicenseSummary';
 export * from './cards/ActivationCard';
 export * from './cards/DayPicker';
 export * from './offers/OfferCard';
+export * from './offers/CabinCard';
