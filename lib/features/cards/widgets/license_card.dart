@@ -94,8 +94,11 @@ class LicenseCard extends StatelessWidget {
           _summary(context, showHolder: true),
           const SizedBox(height: AppSpacing.s),
           CardActions(
-            primary: AppButton(
-                label: 'Aktiver', style: AppButtonStyle.accent, expand: true, onPressed: onActivate),
+            // Uten onActivate (f.eks. fiskekort som ikke aktiveres) vises ingen hovedknapp.
+            primary: onActivate == null
+                ? null
+                : AppButton(
+                    label: 'Aktiver', style: AppButtonStyle.accent, expand: true, onPressed: onActivate),
             iconActions: [
               if (onInfo != null) CardIconAction.info(onInfo),
               if (onShowInMap != null) CardIconAction.map(onShowInMap),

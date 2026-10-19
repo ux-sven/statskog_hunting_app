@@ -8,6 +8,7 @@ export '../domain/card_type.dart';
 export '../domain/species.dart';
 export '../icons/app_icon.dart';
 export '../icons/app_icons.dart';
+export 'app_bottom_nav.dart';
 export 'app_button.dart';
 export 'app_checkbox.dart';
 export 'app_chip.dart';

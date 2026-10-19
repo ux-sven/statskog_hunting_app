@@ -50,7 +50,7 @@ class CardActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      if (primary != null) Expanded(child: primary!),
+      if (primary != null) Expanded(child: primary!) else const Spacer(),
       for (final a in iconActions) ...[
         const SizedBox(width: AppSpacing.s),
         Tooltip(
