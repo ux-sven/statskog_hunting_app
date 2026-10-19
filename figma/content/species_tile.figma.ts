@@ -11,12 +11,13 @@ const layout = instance.getEnum('Property 1', {
   'Horisontal Small': 'small',
   'Horisontal Variant': 'horizontalTrailing',
 })
-// Arten leses fra Code Connect-id-en til artsikonet (species-<navn>).
+// Arten leses fra Code Connect-id-en til artsikonet (speciesicon-<navn>).
 let species = 'Species.orret'
 const sw = instance.getInstanceSwap('Arttype')
 if (sw && sw.type === 'INSTANCE' && typeof sw.codeConnectId === 'function') {
   const id = sw.codeConnectId()
-  if (id && id.indexOf('species-') === 0) species = 'Species.' + id.slice(8)
+  const m = (id || '').match(/^species(?:icon)?-(.+)$/)
+  if (m) species = 'Species.' + m[1]
 }
 
 export default {

@@ -1,0 +1,66 @@
+/* Generert fra Figma «Token Colors» (Light/Dark) – samme verdier som lib/theme/tokens.dart. */
+:root {
+  --text-primary: #2a2a2a;
+  --text-secondary: #555555;
+  --text-tertiary: #98a2b3;
+  --text-brand: #00594c;
+  --text-invert: #ffffff;
+  --surface-primary: #ffffff;
+  --surface-secondary: #f6f6f7;
+  --surface-tertiary: #00a7b5;
+  --surface-invert: #00594c;
+  --surface-tableview-header: #ccdedb;
+  --surface-tableview-odd: #eceeef;
+  --border-primary: #eceeef;
+  --border-secondary: #ccdedb;
+  --border-tertiary: #00a7b5;
+  --border-invert: #337a70;
+  --attention-success: #66800b;
+  --attention-warning: #ff7f32;
+  --attention-error: #af3029;
+  --cta-primary-default: #00594c;
+  --cta-primary-hover: #00594c;
+  --cta-primary-disabled: #c7ccce;
+  --cta-primary-visited: #337a70;
+  --cta-primary-selected: #ffb284;
+  --cta-secondary-default: #ffb284;
+  --cta-secondary-pressed: #ffa670;
+  --cta-secondary-selected: #ff995b;
+  --cta-secondary-disabled: #c7ccce;
+  --shade-primary: rgb(11 11 11 / 0.25);
+  --shade-secondary: rgb(11 11 11 / 0.18);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --text-primary: #fcfcfd;
+  --text-secondary: #e4e7ec;
+  --text-tertiary: #98a2b3;
+  --text-brand: #ffe5d6;
+  --text-invert: #2a2a2a;
+  --surface-primary: #404040;
+  --surface-secondary: #555555;
+  --surface-tertiary: #99dce1;
+  --surface-invert: #ccdedb;
+  --surface-tableview-header: #337a70;
+  --surface-tableview-odd: #a2aaad;
+  --border-primary: #555555;
+  --border-secondary: #7f7f7f;
+  --border-tertiary: #33b9c4;
+  --border-invert: #ccdedb;
+  --attention-success: #6ce9a6;
+  --attention-warning: #ff995b;
+  --attention-error: #fda29b;
+  --cta-primary-default: #ffa670;
+  --cta-primary-hover: #ffb284;
+  --cta-primary-disabled: #daddde;
+  --cta-primary-visited: #ffb284;
+  --cta-primary-selected: #7fd3da;
+  --cta-secondary-default: #99dce1;
+  --cta-secondary-pressed: #66cad3;
+  --cta-secondary-selected: #99bdb7;
+  --cta-secondary-disabled: #daddde;
+  --shade-primary: rgb(255 255 255 / 0.25);
+  --shade-secondary: rgb(255 255 255 / 0.18);
+  color-scheme: dark;
+}

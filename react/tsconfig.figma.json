@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": { "noUnusedLocals": false, "noUnusedParameters": false, "noEmit": true, "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.figma.tsbuildinfo" },
+  "include": ["src"],
+  "exclude": []
+}

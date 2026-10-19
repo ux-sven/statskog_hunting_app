@@ -4,6 +4,13 @@ Flutter-implementasjon av komponentsidene i Figma-filen
 [«Jakt & Fiske (Design 2024)»](https://www.figma.com/design/DuojxX6O5xijF27TpYo3uX/Jakt---Fiske--Design-2024-),
 koblet til Figma med Code Connect (etikett **Flutter**).
 
+## React-versjon (`react/`)
+
+Samme design og funksjoner bygget som web-app (React + TypeScript + Vite + Tailwind + ArcGIS JS),
+for å teste Figma Code Layers og Code Connect for React. Se [react/README.md](react/README.md).
+Code Connect-malene for React ligger i `react/figma/` og bruker label «React», så Flutter- og
+React-snutter vises side om side i Dev Mode.
+
 ## Kom i gang
 ```bash
 flutter create . --project-name jakt_fiske --platforms ios,android,web   # genererer plattformmapper

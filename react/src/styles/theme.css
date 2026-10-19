@@ -1,0 +1,49 @@
+@theme inline {
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-brand: var(--text-brand);
+  --color-text-invert: var(--text-invert);
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-tertiary: var(--surface-tertiary);
+  --color-surface-invert: var(--surface-invert);
+  --color-surface-tableview-header: var(--surface-tableview-header);
+  --color-surface-tableview-odd: var(--surface-tableview-odd);
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-tertiary: var(--border-tertiary);
+  --color-border-invert: var(--border-invert);
+  --color-attention-success: var(--attention-success);
+  --color-attention-warning: var(--attention-warning);
+  --color-attention-error: var(--attention-error);
+  --color-cta-primary-default: var(--cta-primary-default);
+  --color-cta-primary-hover: var(--cta-primary-hover);
+  --color-cta-primary-disabled: var(--cta-primary-disabled);
+  --color-cta-primary-visited: var(--cta-primary-visited);
+  --color-cta-primary-selected: var(--cta-primary-selected);
+  --color-cta-secondary-default: var(--cta-secondary-default);
+  --color-cta-secondary-pressed: var(--cta-secondary-pressed);
+  --color-cta-secondary-selected: var(--cta-secondary-selected);
+  --color-cta-secondary-disabled: var(--cta-secondary-disabled);
+  --color-shade-primary: var(--shade-primary);
+  --color-shade-secondary: var(--shade-secondary);
+
+  /* Token Dimensions/spacing */
+  --spacing-xs: 8px;
+  --spacing-s: 12px;
+  --spacing-m: 16px;
+  --spacing-l: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* Token Dimensions/radius */
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 12px;
+  --radius-xlarge: 16px;
+  --radius-xxlarge: 24px;
+
+  --font-body: 'Open Sans', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+}

@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+@import './tokens.css';
+@import './theme.css';
+
+/* Typografi fra Figma «Typography» (Mobile). Display/Headline: Cormorant Garamond.
+   Subtitle/Body/Button: Open Sans. Navn som i Figma-stilene. */
+@utility type-display-large { font-family: var(--font-display); font-size: 80px; line-height: 152px; }
+@utility type-display-medium { font-family: var(--font-display); font-size: 44px; line-height: 92px; }
+@utility type-display-small { font-family: var(--font-display); font-size: 36px; line-height: 72px; }
+@utility type-headline-h1 { font-family: var(--font-display); font-size: 30px; line-height: 46px; }
+@utility type-headline-h2 { font-family: var(--font-display); font-size: 24px; line-height: 38px; }
+@utility type-headline-h3 { font-family: var(--font-display); font-size: 20px; line-height: 30px; }
+@utility type-subtitle-large { font-family: var(--font-body); font-size: 18px; line-height: 28px; }
+@utility type-subtitle-small { font-family: var(--font-body); font-size: 16px; line-height: 28px; }
+@utility type-body-large { font-family: var(--font-body); font-size: 16px; line-height: 24px; }
+@utility type-body-medium { font-family: var(--font-body); font-size: 15px; line-height: 23px; }
+@utility type-body-small { font-family: var(--font-body); font-size: 14px; line-height: 22px; }
+@utility type-body-xsmall { font-family: var(--font-body); font-size: 12px; line-height: 20px; }
+@utility type-button-large { font-family: var(--font-body); font-size: 18px; line-height: 24px; }
+@utility type-button-medium { font-family: var(--font-body); font-size: 16px; line-height: 22px; }
+@utility type-button-small { font-family: var(--font-body); font-size: 14px; line-height: 20px; }
+
+@utility shadow-map { box-shadow: 0 2px 14px var(--shade-secondary); }
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Synlig fokus for tastatur (WCAG 2.4.7). */
+  :focus-visible {
+    outline: 2px solid var(--cta-primary-selected);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
