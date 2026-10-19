@@ -89,3 +89,11 @@ Prinsipper:
 - **TableView Cell Large** har to varianter som begge heter `Style=Odd, Content=Input`. Den ene skulle vært `Normal`. Settet har derfor feil i Figma og kan ikke publiseres eller kobles.
 - **Checkbox og radio** bruker ikke-tokeniserte farger i ikonlagene (#bcb3e2, #c9ced6). Koden bruker `border-tertiary`, `cta-primary-default` og `cta-primary-disabled`, som er det skjermbildene viser.
 - Komponentsettene **Chips Medium, Map Button og Main Map Navigation** er ikke publisert i biblioteket, så de mangler Code Connect-kobling.
+
+## Prototypen på GitHub Pages
+
+`.github/workflows/pages.yml` bygger React-appen i `react/` ved hver push til `main` (når noe i `react/` er endret) og publiserer den på https://ux-sven.github.io/statskog_hunting_app/. Komponentkatalogen ligger på samme adresse med `#katalog` til slutt.
+
+- Slå på én gang: Settings → Pages → Source: «GitHub Actions».
+- Kan også kjøres for hånd under Actions → «Publiser prototype til GitHub Pages» → Run workflow.
+- Siden er offentlig og bruker alltid den falske Inatur-tjenesten. Sett aldri ekte nøkler eller `VITE_*`-adresser i bygget, de blir lesbare i nettleseren.

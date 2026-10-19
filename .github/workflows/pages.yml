@@ -1,0 +1,54 @@
+# Bygger React-prototypen i react/ og publiserer den på GitHub Pages.
+# Slå på én gang: Settings → Pages → Source: «GitHub Actions».
+# Siden er offentlig. Bygget bruker alltid den falske Inatur-tjenesten:
+# ikke sett VITE_INATUR_BASE_URL / VITE_JAKTDB_BASE_URL her.
+name: Publiser prototype til GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'react/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: react
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: react/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Sjekk Code Connect-maler
+        run: npm run check:figma
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: react/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
