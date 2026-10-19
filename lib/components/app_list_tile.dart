@@ -21,7 +21,7 @@ enum AppListTileLayout {
 /// - `Main Text` → [title]
 /// - `Show SubText` + `Sub Text` → [subtitle]
 /// - `Show Icon` + `Icon Type` → [icon]
-/// - `Show Accessory View` → [onTap] satt (pil til høyre)
+/// - `Show Accessory View` → [onTap] satt; `Accessory Icon` → [trailingIcon]
 /// - `State=Toggle` → [AppListTile.toggle]
 /// - `State=Delete` → [onDelete] (rød slett-knapp til høyre)
 /// - `Show separator` → [showSeparator]
@@ -34,6 +34,7 @@ class AppListTile extends StatelessWidget {
     this.layout = AppListTileLayout.stacked,
     this.onTap,
     this.onDelete,
+    this.trailingIcon = AppIcons.chevronRight,
     this.showSeparator = true,
   })  : toggleValue = null,
         onToggle = null;
@@ -50,7 +51,8 @@ class AppListTile extends StatelessWidget {
         onToggle = onChanged,
         layout = AppListTileLayout.stacked,
         onTap = null,
-        onDelete = null;
+        onDelete = null,
+        trailingIcon = AppIcons.chevronRight;
 
   final String title;
   final String? subtitle;
@@ -58,6 +60,9 @@ class AppListTile extends StatelessWidget {
   final AppListTileLayout layout;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
+
+  /// Ikonet til høyre når raden kan trykkes (Figma `Accessory Icon`).
+  final AppIcons trailingIcon;
   final bool showSeparator;
   final bool? toggleValue;
   final ValueChanged<bool>? onToggle;
@@ -101,7 +106,7 @@ class AppListTile extends StatelessWidget {
       ] else ...[
         if (onTap != null) ...[
           const SizedBox(width: AppSpacing.xs),
-          AppIcon(AppIcons.chevronRight, size: 16, color: p.ctaPrimaryDefault),
+          AppIcon(trailingIcon, size: 16, color: p.ctaPrimaryDefault),
         ],
         if (onDelete == null) const SizedBox(width: AppSpacing.m),
       ],

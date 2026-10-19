@@ -5,7 +5,15 @@ import '../theme/typography.dart';
 import 'internal/interactive.dart';
 
 /// Visuell stil – Figma-egenskapen `Style`.
-enum AppButtonStyle { primary, secondary, tertiary }
+enum AppButtonStyle {
+  primary,
+  secondary,
+  tertiary,
+
+  /// Oransje knapp for aktivering («Aktiver», «Fjern aktivering»). I Figma er
+  /// dette Primary med fyllet cta/cta-primary-selected overstyrt.
+  accent,
+}
 
 /// Retning – Figma-settene «Button …» (horisontal) og «Button Vertical …».
 enum AppButtonOrientation { horizontal, vertical }
@@ -100,7 +108,10 @@ class AppButton extends StatelessWidget {
             : icon;
         final children = <Widget>[
           if (leadingIcon != null) iconBox(leadingIcon!),
-          if (label != null) Text(label!),
+          if (label != null)
+            Flexible(
+              child: Text(label!, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
           if (trailingIcon != null) iconBox(trailingIcon!),
         ];
         final spaced = <Widget>[];
@@ -113,7 +124,13 @@ class AppButton extends StatelessWidget {
         }
         return AnimatedContainer(
           duration: const Duration(milliseconds: 120),
-          padding: squareSize != null ? EdgeInsets.zero : _padding,
+          // Figma tegner rammen innenfor knappen; trekk rammen fra polstringen
+          // slik at størrelsen blir den samme med og uten ramme.
+          padding: squareSize != null
+              ? EdgeInsets.zero
+              : _padding - EdgeInsets.all(c.border == null
+                  ? 0
+                  : (focused ? _focusWidth : 1)),
           width: squareSize,
           height: squareSize,
           alignment: squareSize != null ? Alignment.center : null,
@@ -175,6 +192,21 @@ class AppButton extends StatelessWidget {
               focused: p.ctaPrimarySelected,
               pressed: p.ctaPrimaryHover,
               disabled: p.ctaPrimaryDisabled),
+        );
+      case AppButtonStyle.accent:
+        final bg = resolveState(s,
+            normal: p.ctaPrimarySelected,
+            hovered: p.ctaSecondaryPressed,
+            focused: p.ctaSecondaryPressed,
+            pressed: p.ctaSecondarySelected,
+            disabled: p.ctaPrimaryDisabled);
+        return _ButtonColors(
+          background: bg,
+          // Mørk tekst på lys bakgrunn i begge temaer.
+          foreground: bg.computeLuminance() > 0.4
+              ? const Color(0xFF2A2A2A)
+              : const Color(0xFFFFFFFF),
+          border: resolveState<Color?>(s, normal: null, focused: p.ctaPrimaryDefault),
         );
       case AppButtonStyle.tertiary:
         return _ButtonColors(

@@ -1,10 +1,16 @@
 // Generert fra figma/*.figma.ts: sjekker at koden Figma viser i Dev Mode kompilerer.
-// ignore_for_file: prefer_const_constructors, unnecessary_const
+// ignore_for_file: prefer_const_constructors, unnecessary_const, avoid_init_to_null
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jakt_fiske/jakt_fiske.dart';
 
 const String? valgtVerdi = null;
+late Offer offer;
+late HuntingLicense license;
+late Activation activation;
+late ActivationSlot slot;
+late List<ActivationSlot> slots;
+late Set<DateTime> selectedDays;
 
 List<Widget> snippets() => <Widget>[
   // button_large.figma.ts
@@ -1548,6 +1554,48 @@ List<Widget> snippets() => <Widget>[
     mode: UserLocationMode.north,
     onPressed: () {},
   ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onRemove: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onReportCapture: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onRemove: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onReportCapture: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onRemove: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
+  // content/activation_card.figma.ts
+  ActivationCard(
+    activation: activation,
+    onReportCapture: () {},
+    onReceipt: () {},
+    onShowInMap: () {},
+  ),
   // content/app_list_tile.figma.ts
   AppListTile(
     title: 'Main Text',
@@ -1657,6 +1705,74 @@ List<Widget> snippets() => <Widget>[
   const CardTypeBadge(CardType.ukeskort, inactive: true),
   // content/card_type_badge_inactive.figma.ts
   const CardTypeBadge(CardType.ukeskort, inactive: true),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    onTap: () {},
+  ),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    selected: true,
+    onTap: () {},
+  ),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    onTap: null,
+  ),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    onTap: () {},
+  ),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    selected: true,
+    onTap: () {},
+  ),
+  // content/day_cell.figma.ts
+  DayCell(
+    slot: slot,
+    onTap: null,
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
+  // content/day_picker.figma.ts
+  DayPicker(
+    slots: slots,
+    selected: selectedDays,
+    onToggle: (day) {},
+  ),
   // content/filter_checkbox_tile.figma.ts
   FilterCheckboxTile(
     label: 'Agder',
@@ -1746,6 +1862,98 @@ List<Widget> snippets() => <Widget>[
     expanded: true,
     onTap: () {},
   ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+  ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+    variant: LicenseSummaryVariant.withPrice,
+  ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+    variant: LicenseSummaryVariant.full,
+    onActivate: () {},
+    onDocumentation: () {},
+    onShowInMap: () {},
+  ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+  ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+    variant: LicenseSummaryVariant.withPrice,
+  ),
+  // content/license_summary.figma.ts
+  LicenseSummary(
+    license: license,
+    variant: LicenseSummaryVariant.full,
+    onActivate: () {},
+    onDocumentation: () {},
+    onShowInMap: () {},
+  ),
+  // content/offer_card.figma.ts
+  OfferCard(
+    offer: offer,
+    onBuy: () {},
+    onInfo: () {},
+    onShowInMap: () {},
+  ),
+  // content/offer_card.figma.ts
+  LicenseCard(
+    license: license, // aktivert når license.activatedDate er satt
+    onActivate: () {},
+    onInfo: () {},
+    onShowInMap: () {},
+  ),
+  // content/offer_card.figma.ts
+  LicenseCard(
+    license: license, // aktivert når license.activatedDate er satt
+    onActivate: () {},
+    onInfo: () {},
+    onShowInMap: () {},
+    onReportCapture: () {},
+  ),
+  // content/offer_card.figma.ts
+  LicenseCard.details(
+    license: license,
+    onActivate: () {},
+    onShowInMap: () {},
+    onRules: () {},
+    onReceipt: () {},
+    onOfferInfo: () {},
+    onDownloadOfflineMap: () {},
+  ),
+  // content/offer_card.figma.ts
+  OfferCard(
+    offer: offer,
+    onBuy: () {},
+    onInfo: () {},
+    onShowInMap: () {},
+  ),
+  // content/offer_card.figma.ts
+  LicenseCard(
+    license: license, // aktivert når license.activatedDate er satt
+    onActivate: () {},
+    onInfo: () {},
+    onShowInMap: () {},
+  ),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
+  // content/offer_image.figma.ts
+  OfferImage(imageUrl: offer.imageUrl),
   // content/section_header.figma.ts
   SectionHeader(
     title: 'Tekst med \'fnutt\' og linjeskift',

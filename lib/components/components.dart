@@ -23,4 +23,5 @@ export 'app_text_field.dart';
 export 'card_type_badge.dart';
 export 'count_stepper.dart';
 export 'map_controls.dart';
+export 'meta_row.dart';
 export 'section_header.dart';

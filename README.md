@@ -53,6 +53,13 @@ Siden skiller mellom byggesteiner (koblet med Code Connect) og eksempelvisninger
 | Mobile TableView Cell (Archive) | `AppListTile`, `AppListTile.toggle`, `AppToggle` |
 | Segmented Control (iOS-bibliotek) | `AppSegmentedControl` |
 | Telleren i Counter / Capture Item Counter | `CountStepper` |
+| Offer Card `Buy` | `OfferCard(offer:)` (+ `OfferImage`) |
+| Offer Card `Not Activated` / `Activated` / `Info View` | `LicenseCard(license:)`, `LicenseCard.details` |
+| Hunting Card `Mini` / `Activate` / `Full` | `LicenseSummary(variant:)` |
+| Activation Card | `ActivationCard(onRemove: / onReportCapture:)` |
+| Activation Day, Activation Options | `DayCell`, `DayPicker` |
+| Ikon + tekst-linjene i kortene | `MetaRow`, `MetaRow.parts`, `KeyValueRow` |
+| Oransje «Aktiver»-knapp (Primary med overstyrt fyll) | `AppButton(style: AppButtonStyle.accent)` |
 | Filter, Filter Art Fisk/Småvilt, Filter Fylke/Kommune/Jaktkort | Eksempel: én `FilterListScreen<T>` |
 
 Prinsipper:

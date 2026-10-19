@@ -57,6 +57,7 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
   bool _selectOpen = false;
   int _count = 2;
   bool? _fylke = false;
+  final _days = <DateTime>{DateTime(2024, 11, 19)};
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +244,78 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
             )),
           ),
         ]),
+        section('Kort', [
+          SizedBox(
+            width: 318,
+            child: OfferCard(offer: _offer, onBuy: () {}, onInfo: () {}, onShowInMap: () {}),
+          ),
+          SizedBox(
+            width: 318,
+            child: LicenseCard(license: _license, onActivate: () {}, onInfo: () {}, onShowInMap: () {}),
+          ),
+          SizedBox(
+            width: 318,
+            child: LicenseCard(
+                license: _activeLicense,
+                onActivate: () {},
+                onInfo: () {},
+                onShowInMap: () {},
+                onReportCapture: () {}),
+          ),
+          SizedBox(
+            width: 318,
+            child: LicenseCard.details(
+              license: _license,
+              onActivate: () {},
+              onShowInMap: () {},
+              onRules: () {},
+              onReceipt: () {},
+              onOfferInfo: () {},
+              onDownloadOfflineMap: () {},
+            ),
+          ),
+          SizedBox(
+            width: 316,
+            child: Column(children: [
+              LicenseSummary(license: _huntingLicense),
+              LicenseSummary(license: _huntingLicense, variant: LicenseSummaryVariant.withPrice),
+            ]),
+          ),
+          SizedBox(
+            width: 316,
+            child: LicenseSummary(
+                license: _huntingLicense,
+                variant: LicenseSummaryVariant.full,
+                onActivate: () {},
+                onDocumentation: () {},
+                onShowInMap: () {}),
+          ),
+          SizedBox(
+            width: 350,
+            child: Column(children: [
+              ActivationCard(activation: _activation, onRemove: () {}, onReceipt: () {}, onShowInMap: () {}),
+              const SizedBox(height: AppSpacing.m),
+              ActivationCard(
+                  activation: _activation, onReportCapture: () {}, onReceipt: () {}, onShowInMap: () {}),
+            ]),
+          ),
+          SizedBox(
+            width: 904,
+            child: DayPicker(
+              slots: [
+                for (var i = 0; i < 10; i++)
+                  ActivationSlot(
+                    date: DateTime(2024, 11, 18 + i),
+                    used: const [4, 2, 0, 0, 0, 10, 6, 0, 0, 0][i],
+                    capacity: 10,
+                    available: i != 5,
+                  ),
+              ],
+              selected: _days,
+              onToggle: (d) => setState(() => _days.contains(d) ? _days.remove(d) : _days.add(d)),
+            ),
+          ),
+        ]),
         section('Checkbox', [
           AppCheckbox(
               value: _check,
@@ -371,3 +444,63 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
     );
   }
 }
+
+// Eksempeldata for katalogen.
+const _offer = Offer(
+  title: 'Fiskekort Malangen grunneierlag',
+  group: SpeciesGroup.fish,
+  county: 'Telemark',
+  municipality: 'Vinje',
+  speciesText: 'Innlandsfiske, Ørret, Gjedde, Abbor, Røye, Sik, Harr, Karpefisk, Brunørret, Andre',
+  cardTypes: [CardType.dagskort, CardType.ukeskort],
+  unavailableCardTypes: [CardType.sesongkort],
+  priceFrom: 75,
+  imageAsset: 'assets/images/eksempel/tilbud_fiske.png',
+);
+
+final _license = HuntingLicense(
+  cardNumber: '1721894',
+  cardType: CardType.dagskort,
+  title: 'Jaktkort Malangen grunneierlag',
+  group: SpeciesGroup.game,
+  validDates: [DateTime(2024, 12, 13), DateTime(2024, 12, 14), DateTime(2024, 12, 15)],
+  speciesText: 'Lirype, Fjellrype, Orrfugl, Hare',
+  hunterNumber: '654321',
+  holderName: 'Ola Nordmann',
+  phone: '987 65 432',
+  email: 'ola@eksempel.no',
+);
+
+final _activeLicense = HuntingLicense(
+  cardNumber: '1721894',
+  cardType: CardType.dagskort,
+  title: 'Jaktkort Malangen grunneierlag',
+  group: SpeciesGroup.game,
+  validDates: [DateTime(2024, 12, 13)],
+  speciesText: 'Lirype, Fjellrype, Orrfugl, Hare',
+  hunterNumber: '654321',
+  holderName: 'Ola Nordmann',
+  activatedDate: DateTime(2024, 12, 13),
+);
+
+final _huntingLicense = HuntingLicense(
+  cardNumber: '1721894',
+  cardType: CardType.dagskort,
+  title: 'Rådyrjakt ordinær felt 1. Ålseterfeltet - Løiten Almenning',
+  group: SpeciesGroup.game,
+  validDates: [DateTime(2024, 12, 13), DateTime(2024, 12, 14), DateTime(2024, 12, 15)],
+  speciesText: 'Lirype, Fjellrype, Orrfugl, Hare',
+  hunterNumber: '654321',
+  holderName: 'Ola Nordmann',
+  phone: '987 65 432',
+  email: 'ola@eksempel.no',
+  price: 300,
+);
+
+final _activation = Activation(
+  licenseTitle: 'Småviltjakt i Hersjøen-Kråssådal utmarkslag',
+  cardNumber: '1721894',
+  county: 'Trøndelag',
+  municipality: 'Selbu',
+  date: DateTime(2024, 12, 13),
+);
