@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../icons/app_icon.dart';
+import '../icons/app_icons.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 import 'app_button.dart';
@@ -79,14 +81,15 @@ class AppTableHeaderCell extends StatelessWidget {
               visualDensity: VisualDensity.compact,
               tooltip: 'Sorter',
               onPressed: onSort,
-              icon: Icon(
-                switch (sortState) {
-                  AppSortState.unsorted => Icons.unfold_more,
-                  AppSortState.ascending => Icons.arrow_upward,
-                  AppSortState.descending => Icons.arrow_downward,
-                },
-                size: 16,
-                color: p.ctaPrimaryDefault,
+              icon: Transform.rotate(
+                angle: sortState == AppSortState.ascending ? 3.14159 : 0,
+                child: AppIcon(
+                  sortState == AppSortState.unsorted
+                      ? AppIcons.unsorted
+                      : AppIcons.sortDown,
+                  size: 16,
+                  color: p.ctaPrimaryDefault,
+                ),
               ),
             ),
           if (onFilter != null)
@@ -94,7 +97,7 @@ class AppTableHeaderCell extends StatelessWidget {
               visualDensity: VisualDensity.compact,
               tooltip: 'Filtrer',
               onPressed: onFilter,
-              icon: Icon(Icons.filter_list, size: 16, color: p.ctaPrimaryDefault),
+              icon: AppIcon(AppIcons.filter, size: 16, color: p.ctaPrimaryDefault),
             ),
         ],
       ),
@@ -231,13 +234,13 @@ class AppTablePagination extends StatelessWidget {
     final prev = AppButton(
       size: size,
       style: AppButtonStyle.secondary,
-      leadingIcon: const Icon(Icons.chevron_left),
+      leadingIcon: const AppIcon(AppIcons.chevronRoundedLeft),
       onPressed: currentPage > 1 ? () => onPageChanged(currentPage - 1) : null,
     );
     final next = AppButton(
       size: size,
       style: AppButtonStyle.secondary,
-      leadingIcon: const Icon(Icons.chevron_right),
+      leadingIcon: const AppIcon(AppIcons.chevronRoundedRight),
       onPressed:
           currentPage < pageCount ? () => onPageChanged(currentPage + 1) : null,
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../icons/app_icon.dart';
+import '../icons/app_icons.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 import 'internal/interactive.dart';
@@ -77,7 +79,7 @@ class MapZoomControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = AppPalette.of(context);
-    Widget half(IconData icon, VoidCallback? onTap, String label, BorderRadius r) =>
+    Widget half(AppIcons icon, VoidCallback? onTap, String label, BorderRadius r) =>
         InteractiveBuilder(
           onTap: onTap,
           semanticLabel: label,
@@ -90,17 +92,17 @@ class MapZoomControl extends StatelessWidget {
                   : p.surfacePrimary,
               borderRadius: r,
             ),
-            child: Icon(icon, size: 22, color: p.ctaPrimaryDefault),
+            child: Center(child: AppIcon(icon, size: 22, color: p.ctaPrimaryDefault)),
           ),
         );
     return DecoratedBox(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), boxShadow: _shadow(p)),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        half(Icons.add, onZoomIn, 'Zoom inn',
+        half(AppIcons.plus, onZoomIn, 'Zoom inn',
             const BorderRadius.vertical(top: Radius.circular(20))),
         const SizedBox(height: 4),
-        half(Icons.remove, onZoomOut, 'Zoom ut',
+        half(AppIcons.minus, onZoomOut, 'Zoom ut',
             const BorderRadius.vertical(bottom: Radius.circular(20))),
       ]),
     );
@@ -120,12 +122,12 @@ class UserLocationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = switch (mode) {
-      UserLocationMode.notActive => Icons.location_searching,
-      UserLocationMode.active => Icons.navigation,
-      UserLocationMode.north => Icons.explore,
+      UserLocationMode.notActive => AppIcons.nearMeOutlined,
+      UserLocationMode.active => AppIcons.nearMe,
+      UserLocationMode.north => AppIcons.northDirection,
     };
     return MapButton(
-      icon: Icon(icon),
+      icon: AppIcon(icon),
       onPressed: onPressed,
       tooltip: switch (mode) {
         UserLocationMode.notActive => 'Vis min posisjon',
@@ -164,12 +166,13 @@ class MainMapNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <Widget>[
       if (onHome != null)
-        MapButton(icon: const Icon(Icons.home), onPressed: onHome, tooltip: 'Hjem'),
+        MapButton(
+            icon: const AppIcon(AppIcons.mapHome), onPressed: onHome, tooltip: 'Hjem'),
       if (onZoomIn != null || onZoomOut != null)
         MapZoomControl(onZoomIn: onZoomIn, onZoomOut: onZoomOut),
       if (onCompassNorth != null)
         MapButton(
-            icon: const Icon(Icons.gps_fixed),
+            icon: const AppIcon(AppIcons.target),
             onPressed: onCompassNorth,
             tooltip: 'Nord opp'),
       if (userLocationMode != null)
@@ -205,17 +208,17 @@ class SecondaryMapNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget b(IconData i, VoidCallback? f, String t) =>
-        MapButton(icon: Icon(i), onPressed: f, tooltip: t);
+    Widget b(AppIcons i, VoidCallback? f, String t) =>
+        MapButton(icon: AppIcon(i), onPressed: f, tooltip: t);
     return _MapControlColumn(children: [
-      if (onMapLayers != null) b(Icons.layers_outlined, onMapLayers, 'Kartlag'),
-      if (onBasemaps != null) b(Icons.map_outlined, onBasemaps, 'Bakgrunnskart'),
-      if (onLegend != null) b(Icons.list_alt, onLegend, 'Tegnforklaring'),
-      if (onMeasure != null) b(Icons.straighten, onMeasure, 'Mål'),
-      if (onPrint != null) b(Icons.print_outlined, onPrint, 'Skriv ut'),
-      if (onDraw != null) b(Icons.edit_outlined, onDraw, 'Tegn'),
-      if (onTools != null) b(Icons.handyman_outlined, onTools, 'Verktøy'),
-      if (on3D != null) b(Icons.view_in_ar_outlined, on3D, '3D'),
+      if (onMapLayers != null) b(AppIcons.layers, onMapLayers, 'Kartlag'),
+      if (onBasemaps != null) b(AppIcons.basemaps, onBasemaps, 'Bakgrunnskart'),
+      if (onLegend != null) b(AppIcons.legend, onLegend, 'Tegnforklaring'),
+      if (onMeasure != null) b(AppIcons.ruler, onMeasure, 'Mål'),
+      if (onPrint != null) b(AppIcons.print, onPrint, 'Skriv ut'),
+      if (onDraw != null) b(AppIcons.draw, onDraw, 'Tegn'),
+      if (onTools != null) b(AppIcons.edit, onTools, 'Verktøy'),
+      if (on3D != null) b(AppIcons.view3d, on3D, '3D'),
     ]);
   }
 }
@@ -260,7 +263,7 @@ class CabinPoi extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(color: p.borderInvert),
           ),
-          child: Icon(Icons.cabin, size: 20, color: p.ctaPrimaryDefault),
+          child: const AppIcon(AppIcons.logCabinColored, size: 20),
         ),
       ),
     );

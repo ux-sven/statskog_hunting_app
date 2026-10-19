@@ -43,7 +43,8 @@ void main() {
       onDeleted: () => deleted = true,
     )));
     await tester.tap(find.text('Rype'));
-    await tester.tap(find.byIcon(Icons.close));
+    await tester.tap(find.byWidgetPredicate(
+        (w) => w is AppIcon && w.icon == AppIcons.deleteClose));
     expect(selected, isTrue);
     expect(deleted, isTrue);
   });
@@ -55,7 +56,8 @@ void main() {
       pageCount: 5,
       onPageChanged: (n) => page = n,
     )));
-    await tester.tap(find.byIcon(Icons.chevron_right));
+    await tester.tap(find.byWidgetPredicate(
+        (w) => w is AppIcon && w.icon == AppIcons.chevronRoundedRight));
     expect(page, 2);
   });
 }

@@ -83,16 +83,30 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
                 label: 'Kjøp',
                 size: size,
                 style: style,
-                leadingIcon: const Icon(Icons.shopping_cart_outlined),
+                leadingIcon: const AppIcon(AppIcons.priceTag),
                 onPressed: () {},
               ),
           const AppButton(label: 'Deaktivert', onPressed: null),
           AppButton(
             label: 'Kart',
             orientation: AppButtonOrientation.vertical,
-            leadingIcon: const Icon(Icons.map_outlined),
+            leadingIcon: const AppIcon(AppIcons.map),
             onPressed: () {},
           ),
+        ]),
+        section('Ikoner', [
+          for (final icon in AppIcons.values)
+            Tooltip(
+              message: icon.name,
+              child: AppIcon(icon, color: p.ctaPrimaryDefault),
+            ),
+        ]),
+        section('Arter', [
+          for (final s in Species.values)
+            Column(mainAxisSize: MainAxisSize.min, children: [
+              SpeciesIcon(s),
+              Text(s.label, style: AppType.bodyXtraSmall),
+            ]),
         ]),
         section('Checkbox', [
           AppCheckbox(
@@ -121,7 +135,7 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
           AppLink(text: 'Kvoter og regler', onTap: () {}),
           AppLink(
               text: 'Tilbudsinfo på Inatur',
-              icon: const Icon(Icons.open_in_new),
+              icon: const AppIcon(AppIcons.externalLink),
               onTap: () {}),
           AppLink(text: 'Besøkt lenke', visited: true, onTap: () {}),
           const AppLink(text: 'Inaktiv', onTap: null),
@@ -138,7 +152,8 @@ class _ComponentCatalogState extends State<ComponentCatalog> {
           ),
           SecondaryMapNavigation(
               onMapLayers: () {}, onBasemaps: () {}, onMeasure: () {}),
-          MapButton(icon: const Icon(Icons.add), label: 'Action', onPressed: () {}),
+          MapButton(
+              icon: const AppIcon(AppIcons.mapPlus), label: 'Action', onPressed: () {}),
           CabinPoi(onTap: () {}),
         ]),
         section('Radiobutton', [

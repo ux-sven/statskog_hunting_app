@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../icons/app_icon.dart';
+import '../icons/app_icons.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 
@@ -165,9 +167,11 @@ class _AppTextFieldState extends State<AppTextField> {
                   widget.onChanged?.call('');
                 },
                 child: Semantics(
-                    button: true, label: 'Tøm feltet', child: const Icon(Icons.close)),
+                    button: true,
+                    label: 'Tøm feltet',
+                    child: const AppIcon(AppIcons.cancel)),
               ),
-            if (isDropdown) const Icon(Icons.keyboard_arrow_down),
+            if (isDropdown) const AppIcon(AppIcons.chevronDownSmall),
             if (widget.postIcon != null) ...[
               const SizedBox(width: AppSpacing.xs),
               widget.postIcon!,

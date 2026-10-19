@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../icons/app_icon.dart';
+import '../icons/app_icons.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 import 'app_button.dart';
@@ -69,11 +71,11 @@ class _AppSearchBarState extends State<AppSearchBar> {
     final p = AppPalette.of(context);
     final active = _focus.hasFocus;
     final radius = widget.rounded ? AppRadius.full : AppRadius.s;
-    final searchIcon = Icon(Icons.search, size: 18, color: p.textTertiary);
+    final searchIcon = AppIcon(AppIcons.search, size: 18, color: p.textTertiary);
     final clear = widget.showClear && _controller.text.isNotEmpty
         ? IconButton(
             tooltip: 'Tøm søk',
-            icon: Icon(Icons.close, size: 18, color: p.textSecondary),
+            icon: AppIcon(AppIcons.cancel, size: 18, color: p.textSecondary),
             onPressed: () {
               _controller.clear();
               widget.onChanged?.call('');

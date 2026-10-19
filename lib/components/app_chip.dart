@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../icons/app_icon.dart';
+import '../icons/app_icons.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 import 'internal/interactive.dart';
@@ -97,7 +99,7 @@ class AppChip extends StatelessWidget {
                     height: double.infinity,
                     color: selected ? p.surfaceSecondary : null,
                     alignment: Alignment.center,
-                    child: Icon(Icons.close,
+                    child: AppIcon(AppIcons.deleteClose,
                         size: size == AppSize.large ? 20 : 16,
                         color: disabled ? p.ctaPrimaryDisabled : p.ctaPrimaryDefault),
                   ),
