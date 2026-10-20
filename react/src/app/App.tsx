@@ -85,7 +85,9 @@ export function App() {
   const frame = (children: ReactNode) => (
     <AppContext.Provider value={nav}>
       <div className="flex h-full justify-center bg-[color-mix(in_srgb,var(--surface-tertiary)_15%,var(--surface-primary))]">
-        <div className="relative flex h-full w-full max-w-[440px] flex-col overflow-hidden bg-surface-primary">
+        {/* Full bredde på mobil og nettbrett. Bare på PC (mus/styreflate) vises appen
+            som en telefon på 440 px midt på skjermen. Sidemarg for hakket når telefonen ligger. */}
+        <div className="relative flex h-full w-full flex-col overflow-hidden bg-surface-primary pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] [@media(hover:hover)_and_(pointer:fine)]:max-w-[440px]">
           {children}
           <OverlayRoot />
           {toast && (
