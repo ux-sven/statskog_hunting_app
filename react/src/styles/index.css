@@ -13,6 +13,29 @@
     height: 100%;
   }
 
+  /* Oppfør deg som en app: ingen zoom av hele siden (se app/noZoom.ts),
+     ingen dobbelttrykk-zoom, ingen gummistrikk-effekt og ingen automatisk
+     forstørring av tekst når telefonen snus. */
+  html {
+    touch-action: pan-x pan-y;
+    overscroll-behavior: none;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  label {
+    touch-action: manipulation;
+  }
+
   body {
     margin: 0;
     background: var(--surface-primary);
